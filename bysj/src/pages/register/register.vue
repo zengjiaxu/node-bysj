@@ -1,21 +1,22 @@
 <template>
  <div class="login">
-  <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules">
+  <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
     <el-form-item label="账号" prop="name">
       <el-input v-model="formLabelAlign.name"></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="pass">
-      <el-input v-model="formLabelAlign.pass"></el-input>
+      <el-input v-model="formLabelAlign.pass" type="password"></el-input>
     </el-form-item>
     <el-form-item label="邮箱" prop="email">
       <el-input v-model="formLabelAlign.email" type="email"></el-input>
     </el-form-item>
   </el-form>
-  <el-button>注册</el-button>
+  <el-button @click="submitReg">注册</el-button>
  </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'Login',
   data () {
@@ -38,6 +39,30 @@ export default {
         email: [
         { required: true,type: 'email', message: '请输入正确的电子邮件格式', trigger: 'blur' }
         ]
+    }
+  }
+},
+methods: {
+  submitReg () {
+      axios.defaults.withCredentials = true
+      this.$refs.ruleForm.validate((val)=>{
+        if(val){//表单验证通过
+            this.isDis = false
+            axios.post('http://localhost:3000/users/register',{
+            user:this.name,
+            pass:this.pass,
+            email:this.email
+          }).then(this.getInfo,(err)=>console.log(err))
+        }else{//表单验证不通过
+          alert('请根据提示输入正确的数据')
+        }
+      })
+  },
+  getInfo (res) {
+    if(res.data.code === 1){
+      alert(res.data.msg)
+    }else{
+      alert('注册失败')
     }
   }
 }
