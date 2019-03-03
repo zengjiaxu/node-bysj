@@ -1,6 +1,6 @@
 <template>
  <div class="login">
-  <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules">
+  <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
     <el-form-item label="账号" prop="name">
       <el-input v-model="formLabelAlign.name"></el-input>
     </el-form-item>
@@ -8,12 +8,14 @@
       <el-input v-model="formLabelAlign.pass"></el-input>
     </el-form-item>
   </el-form>
-  <el-button>登录</el-button>
+  <el-button @click="loginFrom">登录</el-button>
   <router-link to="/">忘记密码</router-link>
  </div>
 </template>
 
 <script>
+import axios from 'axios'
+import qs from 'qs'
 export default {
   name: 'Login',
   data () {
@@ -33,6 +35,30 @@ export default {
         { min: 5, max: 12, message: '长度在 5 到 12 个字符', trigger: 'blur' }
         ]
     }
+  }
+},
+methods:{
+  loginFrom () {
+    this.$refs.ruleForm.validate((val)=>{
+      if(val){
+            axios.defaults.withCredentials = true//允许跨域访问
+            axios.post('http://localhost:3000/users/login',{
+            user:this.formLabelAlign.name,
+            pass:this.formLabelAlign.pass,
+          }).then(this.getInfo,(err)=>console.log(err))
+      }else{
+        alert('请根据提示输入正确的数据')
+      }
+    })
+  },
+  getInfo (res) {
+    if(res.data.code === 1){
+      alert(res.data.msg)
+      this.$router.push('/')
+    }else{
+      alert(res.data.msg)
+    }
+    console.log(res)
   }
 }
 }

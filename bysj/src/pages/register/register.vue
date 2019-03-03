@@ -44,14 +44,12 @@ export default {
 },
 methods: {
   submitReg () {
-      axios.defaults.withCredentials = true
       this.$refs.ruleForm.validate((val)=>{
         if(val){//表单验证通过
-            this.isDis = false
             axios.post('http://localhost:3000/users/register',{
-            user:this.name,
-            pass:this.pass,
-            email:this.email
+            user:this.formLabelAlign.name,
+            pass:this.formLabelAlign.pass,
+            email:this.formLabelAlign.email
           }).then(this.getInfo,(err)=>console.log(err))
         }else{//表单验证不通过
           alert('请根据提示输入正确的数据')

@@ -3,9 +3,12 @@
     <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
     <el-col :span="16">
         <div class="grid-content bg-purple-light">
-            <div class="lgr">
-                <router-link to="/login">登陆</router-link>/
+            <div class="lgr" v-show="!haveSession">
+                <router-link to="/login">登录</router-link>/
                 <router-link to="/register">注册</router-link>
+            </div>
+            <div class="lgr" v-show="haveSession">
+              你好，{{name}}
             </div>
         </div>
     </el-col>
@@ -14,10 +17,29 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
+      name: 'a',
+      haveSession:false
     }
+  },
+  methods: {
+     getInfo (res) {
+       if(document.cookie.length>1){
+         this.haveSession = true
+         this.name = res.data.user
+       }else{
+         this.haveSession = false
+       }
+     }
+  },
+  mounted () {
+    axios.defaults.withCredentials = true//允许跨域访问
+            axios.post('http://localhost:3000/users/login',{
+            msg:'req',
+          }).then(this.getInfo,(err)=>console.log(err))
   }
 }
 
