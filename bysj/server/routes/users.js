@@ -14,7 +14,8 @@ router.post('/register', function (ctx, next) {
 //登录接口
 router.post('/login',async function (ctx, next) {
   const {user,pass} = ctx.request.body
-  if(ctx.session.user){
+  if(!ctx.session.isNew){//判断会话是不是新的
+    console.log(ctx.session.session_id)
     ctx.body = {
       code:3,
       user:ctx.session.user,
@@ -25,23 +26,25 @@ router.post('/login',async function (ctx, next) {
     ctx.set("Access-Control-Allow-Credentials", true)//允许跨域设置cookie
     ctx.session.user = user
     ctx.session.pass = pass
-    ctx.cookies.set(
+    /*ctx.cookies.set(
       'user',user,{
           domain:'localhost', // 写cookie所在的域名
           path:'/',       // 写cookie所在的路径
           maxAge: 7200000,   // cookie有效时长
           expires:new Date('2029-03-08'), // cookie失效时间
           httpOnly:false,  // 是否只用于http请求中获取
-          overwrite:true  // 是否允许重写
+          overwrite:true,  // 是否允许重写
+          signed:true
       })
-      /* ctx.cookies.set(
+       ctx.cookies.set(
         'pass',pass,{
             domain:'localhost', // 写cookie所在的域名
             path:'/',       // 写cookie所在的路径
             maxAge: 7200000,   // cookie有效时长
             expires:new Date('2029-03-08'), // cookie失效时间
-            httpOnly:true,  // 是否只用于http请求中获取
-            overwrite:true  // 是否允许重写
+            httpOnly:false,  // 是否只用于http请求中获取
+            overwrite:true,  // 是否允许重写
+            signed:true
         }) */
     ctx.body = {
       code: 1,
@@ -54,6 +57,12 @@ router.post('/login',async function (ctx, next) {
       msg: '账号或密码错误'
     }
   }
+})
+router.post('/Exit',function (ctx,next) {
+ console.log(ctx.request.body)
+ ctx.body = {
+   msg:'退出成功'
+ }
 })
 
 

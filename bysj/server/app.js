@@ -39,14 +39,15 @@ app.use(cors({
 }))
 
 //session
-app.keys = ['some secret hurr']
-app.use(session({
-  key: 'user', /** cookie的名称，可以不管 */
+let options = {
+  key: 'session_id', /** cookie的名称，可以不管 */
   maxAge: 7200000, /** (number) maxAge in ms (default is 1 days)，cookie的过期时间，这里表示2个小时 */
   overwrite: true, /** (boolean) can overwrite or not (default true) */
   httpOnly: false, /** (boolean) httpOnly or not (default true) */
   signed: true, /** (boolean) signed or not (default true) */
-},app));
+}
+app.keys = ['some secret hurr']
+app.use(session(options,app));
 
 // routes
 app.use(index.routes(), index.allowedMethods())
