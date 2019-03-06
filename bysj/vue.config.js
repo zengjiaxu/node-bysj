@@ -5,7 +5,7 @@ module.exports = {
     devServer: {
         open: process.platform === 'darwin',
         host: 'localhost',
-        port: 8000,
+        port: 1344,
         https: false,
         hotOnly: false,
         proxy: null, // 设置代理

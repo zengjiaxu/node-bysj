@@ -34,7 +34,7 @@ app.use(async (ctx, next) => {
 
 //cors
 app.use(cors({
-  origin: 'http://localhost:8000',
+  origin: 'http://localhost:1344',
   credentials: true
 }))
 

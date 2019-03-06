@@ -1,8 +1,7 @@
 <template>
    <div class="guide">
     <el-row>
-        <el-col :span="4" class="cols"></el-col>
-        <el-col :span="16" class="cols">
+        <el-col :span="24" class="cols">
             <el-row >
             <el-col :span="14" class="left">
                 <el-carousel height="245px" :interval="2000">
@@ -32,7 +31,6 @@
                 </el-col> 
             </el-row>
         </el-col>
-        <el-col :span="4" class="cols"></el-col>
      </el-row>
    </div>
 </template>
@@ -56,7 +54,7 @@ export default {
 <style scoped>
 .guide{
     margin-top: 10px;
-    height: 460px;
+    height: 424px;
 }
 .el-row{
   height: 187px;
