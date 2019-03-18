@@ -9,7 +9,7 @@
     </el-form-item>
   </el-form>
   <el-button @click="loginFrom">登录</el-button>
-  <router-link to="/">忘记密码</router-link>
+  <router-link to="/forget">忘记密码</router-link>
  </div>
 </template>
 
@@ -58,7 +58,6 @@ methods:{
     }else{
       alert(res.data.msg)
     }
-    console.log(res)
   }
 }
 }

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '../pages/Home/home.vue'
 import Login from '../pages/login/login'
 import Register from '../pages/register/register'
+import Forget from '../pages/login/forget.vue'
 Vue.use(Router)
 export default new Router({
     routes: [
@@ -20,6 +21,11 @@ export default new Router({
         path: '/register',
         name: 'Register',
         component: Register
-    },
+      },
+      {
+        path:'/forget',
+        name: 'Forget',
+        component: Forget
+      }
     ]
   })

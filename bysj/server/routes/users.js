@@ -1,4 +1,6 @@
 const router = require('koa-router')()
+const nodeMailer = require('nodemailer') //使用nodemail包发送邮件
+const axios = require('axios')
 
 router.prefix('/users')
 //注册接口
@@ -58,8 +60,69 @@ router.post('/login',async function (ctx, next) {
     }
   }
 })
+
+
+//验证码接口
+router.post('/verify',async (ctx,next)=>{
+  let transporter = nodeMailer.createTransport({//发送对象
+    service: 'qq',
+    auth: {
+      user: '79858318@qq.com',
+      pass: 'swiavumtmpjtbhaf'
+    }
+  })
+  let ko = {
+    code: Math.random().toString(16).slice(2,6).toUpperCase(),
+    //expire: new Date().getTime+60*60*1000,
+    email: ctx.request.body.email
+  }
+  let mailOptions = {//发送内容
+    from: '"认证邮件" <79858318@qq.com}>',
+    to: ko.email,
+    subject: '忘记密码的验证码',
+    html: `你的验证码是${ko.code}`
+  }
+  await transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log('错误是:'+error)
+    } 
+  })
+  ctx.body = {
+    code: 0,
+    msg: '验证码已发送'
+  }
+  axios.post('http://localhost:3000/users/forget',{
+    code:ko.code
+  }).then((res)=>{console.log(res)})
+})
+
+
+//验证验证码是否正确
+router.post('/forget',async (ctx,next)=>{
+  let code
+  if(ctx.request.body.code){
+     code  = ctx.request.body.code
+     ctx.body = {
+       msg:"请求成功"
+     }
+  }else{
+    if(ctx.request.body.yzm === code){
+      ctx.body={
+        code:"1",
+        msg:"验证成功"
+      }
+    }else{
+      ctx.body = {
+        code:"0",
+        msg:"验证失败"
+      }
+    }
+  }
+
+})
+
+//退出接口
 router.post('/Exit',function (ctx,next) {
- console.log(ctx.request.body)
  ctx.body = {
    msg:'退出成功'
  }
