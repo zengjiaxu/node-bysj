@@ -65,10 +65,12 @@ router.post('/login',async function (ctx, next) {
 //验证码接口
 router.post('/verify',async (ctx,next)=>{
   let transporter = nodeMailer.createTransport({//发送对象
-    service: 'qq',
+    host: 'smtp.qq.com',
+    port: 465,
+    secure: true, 
     auth: {
       user: '79858318@qq.com',
-      pass: 'swiavumtmpjtbhaf'
+      pass: 'sztpvzzofabobjfh'
     }
   })
   let ko = {
@@ -77,7 +79,7 @@ router.post('/verify',async (ctx,next)=>{
     email: ctx.request.body.email
   }
   let mailOptions = {//发送内容
-    from: '"认证邮件" <79858318@qq.com}>',
+    from: '"认证邮件" <79858318@qq.com>',
     to: ko.email,
     subject: '忘记密码的验证码',
     html: `你的验证码是${ko.code}`
@@ -88,7 +90,7 @@ router.post('/verify',async (ctx,next)=>{
     } 
   })
   ctx.body = {
-    code: 0,
+    code: 1,
     msg: '验证码已发送'
   }
   axios.post('http://localhost:3000/users/forget',{
@@ -98,14 +100,15 @@ router.post('/verify',async (ctx,next)=>{
 
 
 //验证验证码是否正确
+let code
 router.post('/forget',async (ctx,next)=>{
-  let code
   if(ctx.request.body.code){
      code  = ctx.request.body.code
      ctx.body = {
        msg:"请求成功"
      }
-  }else{
+  }else{ 
+    console.log(code)
     if(ctx.request.body.yzm === code){
       ctx.body={
         code:"1",

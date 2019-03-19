@@ -8,8 +8,9 @@
       <el-input v-model="formLabelAlign.yzm"></el-input>
     </el-form-item>
   </el-form>
-  <el-button @click="sendMsg">发送验证码</el-button>
-  <el-button @click="sure">确认</el-button>
+  <el-button @click="sendMsg" :disabled="isDisabledOne" type="primary">发送验证码</el-button>
+  <span v-show="isShow">请{{timers}}秒后发送</span>
+  <el-button @click="sure" :disabled="isDisabledTwo" type="success">确认</el-button>
  </div>
 </template>
 
@@ -23,7 +24,7 @@ export default {
       labelPosition: 'left',
       formLabelAlign: {
         email: '',
-        yzm:''
+        yzm:'',
     },
     rules: {
         email: [
@@ -34,11 +35,19 @@ export default {
         { required: true,type: 'string', message: '请输入验证码', trigger: 'blur' },
         { min: 4, max: 4, message: '长度为4个字符', trigger: 'blur' }
         ]
-    }
+    },
+    isDisabledOne:false,
+    isDisabledTwo:true,
+    timers:60,
+    timer:null,
+    isShow:false
   }
 },
 methods:{
  sendMsg () {
+    this.isDisabledOne = true
+    this.isShow = true
+    this.timers = 60
    this.$refs.ruleForm.validateField('email',(err)=>{
      if(!err){
             axios.defaults.withCredentials = true//允许跨域访问
@@ -51,7 +60,19 @@ methods:{
    })
  },
  getInfo(res) {
-   console.log(res);  
+   if(res.data.code === 1){
+     this.isDisabledTwo = false
+     this.timer =  setInterval(()=>{
+     this.timers--
+     if(this.timers === 0){
+       clearInterval(this.timer)
+       this.isDisabledOne = false
+        this.isShow = false
+     }
+   },1000)
+   }else{
+     alert('发送失败')
+   }
  },
  sure(){
    this.$refs.ruleForm.validateField('yzm',(err)=>{
@@ -64,7 +85,12 @@ methods:{
    })
  },
  getYzm (res) {
-   conosle.log(res)
+   if(res.data.code === "1"){
+     alert(res.data.msg + ",请登录")
+     this.$router.push('/login')
+   }else{
+   alert(res.data.msg+",您输入的验证码有误")
+ }
  }
 }
 }
@@ -84,8 +110,20 @@ methods:{
   bottom 0
   margin  auto
   text-align center
+  .el-form-item:nth-child(2)
+    padding-right 118px
   .el-button
     width 130px
+  .el-button:nth-child(2)
+    position absolute
+    right 0
+    top 77px
+  span
+    position absolute
+    right 24px
+    top 121px
+    color #cccccc
+    font-size 12px
   a
     position absolute
     right 15px
