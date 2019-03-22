@@ -45,8 +45,6 @@ export default {
 },
 methods:{
  sendMsg () {
-    this.isDisabledOne = true
-    this.isShow = true
     this.timers = 60
    this.$refs.ruleForm.validateField('email',(err)=>{
      if(!err){
@@ -61,6 +59,8 @@ methods:{
  },
  getInfo(res) {
    if(res.data.code === 1){
+     this.isDisabledOne = true
+     this.isShow = true
      this.isDisabledTwo = false
      this.timer =  setInterval(()=>{
      this.timers--
@@ -120,7 +120,7 @@ methods:{
     top 77px
   span
     position absolute
-    right 24px
+    right 39px
     top 121px
     color #cccccc
     font-size 12px
