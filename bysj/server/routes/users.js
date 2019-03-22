@@ -74,7 +74,7 @@ router.post('/verify',async (ctx,next)=>{
     }
   })
   let ko = {
-    code: Math.random().toString(16).slice(2,6).toUpperCase(),
+    code: Math.random().toString(16).slice(2,8).toUpperCase(),
     //expire: new Date().getTime+60*60*1000,
     email: ctx.request.body.email
   }
@@ -82,7 +82,7 @@ router.post('/verify',async (ctx,next)=>{
     from: '"认证邮件" <79858318@qq.com>',
     to: ko.email,
     subject: '忘记密码的验证码',
-    html: `你的验证码是${ko.code}`
+    html: `你的新密码是${ko.code}`
   }
   await transporter.sendMail(mailOptions, (error, info) => {
     if (error) {

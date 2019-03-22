@@ -71,9 +71,10 @@ export default {
   methods: {
      getInfo (res) {
        if(this.getCookie('session_id')){
-         console.log()
          this.haveSession = true
          this.name = res.data.user
+         this.$emit('getN',this.name)
+         this.$emit('hasSess',this.haveSession)
        }else{
          this.haveSession = false
        }
@@ -93,8 +94,10 @@ export default {
        if(this.getCookie('session_id')){
          this.haveSession = true
          this.name = res.data.user
+         this.$emit('hasSess',this.haveSession)
        }else{
          this.haveSession = false
+         this.$emit('hasSess',this.haveSession)
        }
      },
      getCookie (c_name) {    

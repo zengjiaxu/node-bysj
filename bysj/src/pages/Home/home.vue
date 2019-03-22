@@ -1,9 +1,9 @@
 <template>
  <div class="home">
-   <my-header/>
+   <my-header v-on:getN="getName" v-on:hasSess="getSess"/>
     <el-row type="flex" justify="center">
       <el-col :span="16" class="center">
-        <my-layout/>
+        <my-layout :sendN="name" :sendSess="hasSess"/>
         <my-house/>
         <my-foot/>
       </el-col>
@@ -20,7 +20,8 @@ export default {
   name: 'Home',
   data () {
     return {
-
+      name:'',
+      hasSess:''
     }
   },
   components:{
@@ -28,6 +29,14 @@ export default {
     myFoot,
     myLayout,
     myHouse
+  },
+  methods: {
+    getName:function (res) {
+      this.name = res
+    },
+    getSess(res) {
+      this.hasSess = res   
+    }
   }
 }
 

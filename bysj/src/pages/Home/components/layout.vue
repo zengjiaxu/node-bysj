@@ -5,17 +5,21 @@
             <el-row >
             <el-col :span="14" class="left">
                 <el-carousel height="245px" :interval="2000">
-                    <el-carousel-item v-for="item in img" :key="item" :style="{background:`url(${item})`,backgroundSize:'cover'}">
+                    <el-carousel-item v-for="item in img" :key="item" :style="{background:`url(${item})`,backgroundSize:'782px 245px'}">
                     <router-link to="/"></router-link>
                 </el-carousel-item>
                 </el-carousel>
                 </el-col> 
             <el-col :span="4" class="center"></el-col> 
             <el-col :span="6" class="right">
-                <!-- <img src="//s0.meituan.net/bs/fe-web-meituan/2d05c2b/img/avatar.jpg" alt="">
+                <img src="//s0.meituan.net/bs/fe-web-meituan/2d05c2b/img/avatar.jpg" alt="">
                 <p>Hi! 你好</p>
+                <p v-show="sendSess">{{sendN}}</p>
+                <!-- <span class="exit" @click="handleExit">[退出]</span> -->
+                <div v-show="!sendSess">
                 <router-link to="/register">注册</router-link>
-                <router-link to="/login">登录</router-link> -->
+                <router-link to="/login">登录</router-link>
+                </div>
             </el-col> 
             </el-row>
             <el-row>
@@ -25,9 +29,8 @@
                 </el-col> 
                 <el-col :span="4" class="center"></el-col> 
                 <el-col :span="6" class="right">
-                <!-- <img src="http://s1.meituan.net/bs/fe-web-meituan/60ac9a0/img/download-qr.png" alt="">
-                <p>美团手机app版本</p>
-                <p> <span>1元起</span> 吃喝玩乐</p> -->
+                <img src="../../../assets/ewm.png" alt="">
+                <p>微信联系客服</p>
                 </el-col> 
             </el-row>
         </el-col>
@@ -36,11 +39,49 @@
 </template>
 
 <script type="text/ecmascript-6">
+import axios from 'axios'
 export default {
   data(){
     return{
-      img:[1,2,3]
+      img:["https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553146249708&di=c721c0d99882df8beee55393a780f88d&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fae51f3deb48f8c54df9fce3130292df5e0fe7f5b.jpg","http://file1.youboy.com/e/2015/5/20/83/940147.png","https://www.oppein.cn/updata/uploads/201501/54ab56dad1551.jpg"],
+      newName:''
     }
+  },
+  props:['sendN','sendSess'],
+  methods:{
+     getCookie (c_name) {    
+      if (document.cookie.length>0)
+      {
+      let c_start=document.cookie.indexOf(c_name + "=")
+      if (c_start!=-1)
+      { 
+       c_start=c_start + c_name.length+1 
+      let c_end=document.cookie.indexOf(";",c_start)
+      if (c_end==-1) c_end=document.cookie.length
+      return unescape(document.cookie.substring(c_start,c_end))
+      }
+      }
+      return "";
+    },
+     setCookie (name, value, day) {
+     if(day !== 0){     //当设置的时间等于0时，不设置expires属性，cookie在浏览器关闭后删除
+       var expires = day * 24 * 60 * 60 * 1000;
+       var date = new Date(+new Date()+expires);
+       document.cookie = name + "=" + escape(value) + ";expires=" + date.toUTCString();
+     }else{
+       document.cookie = name + "=" + escape(value);
+      }
+    },
+     getInfo () {
+       if(this.getCookie('session_id')){
+         this.newName = this.name
+       }else{
+         this.newName = ''
+       }
+     }
+  },
+  mounted (){
+      this.getInfo()
   }
 }
 </script>
@@ -70,8 +111,9 @@ export default {
   height: 100%;
 }
 .el-row:nth-child(1)>.center {
-  background:url(http://p0.meituan.net/codeman/e473bb428f070321269b23370ff02ba956209.jpg) no-repeat;
-  background-size:cover;
+  background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553144434161&di=2b0876ba649d0468038748e36c65489f&imgtype=0&src=http%3A%2F%2Fs8.sinaimg.cn%2Fbmiddle%2F001Sd502zy6Ua1RdIkT07%26690) no-repeat;
+  background-size:208px 245px;
+  border: 1px solid #e5e5e5;
 }
 .el-row:nth-child(1)>.right {
   text-align: center;
@@ -106,20 +148,23 @@ margin-top: 10px;
   background: purple;
 }
 .el-row:nth-child(2)>.middle>.left {
-   background:url(http://p1.meituan.net/codeman/8cce56c467a17e04f3094d1e455462a0132772.png) no-repeat;
-  background-size:cover;
+   background:url(http://img1.cache.netease.com/catchpic/A/AF/AF7D624C76DB2D70F63A027F5C6D7819.png) no-repeat;
+  background-size:359px 169px;
   display: inline-block;
   width: calc(50% - 5px);
   height: 100%;
+  border: 1px solid #e5e5e5;
 }
 .el-row:nth-child(2)>.middle>.right{
-  background:url(http://p1.meituan.net/codeman/16442c19da1f1c4544f794e29d99c92051716.jpg) no-repeat;
-  background-size:cover;
+  background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553144810735&di=01ed3cf007ccd39a52109ee29d5d45ec&imgtype=0&src=http%3A%2F%2F91cycn.37cy.com%2Fcy91cycn%2F1806%2F18-06-05%2F201806050924203.jpg) no-repeat;
+  background-size:359px 169px;
   margin-left:5px ;
+  border: 1px solid #e5e5e5;
 }
 .el-row:nth-child(2)>.center {
-   background:url(http://p1.meituan.net/codeman/5b21cddb4bb1cbc3a9c3bce0f726c75940469.jpg) no-repeat;
-  background-size:cover;
+  background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553145013428&di=40999aa9986eaa147c491459900b8e06&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dshijue1%252C0%252C0%252C294%252C40%2Fsign%3D99168c98e350352aa56c2d4b3b2a9187%2Fc75c10385343fbf211f4250cba7eca8064388fc1.jpg) no-repeat;
+  background-size:208px 178px;
+  border: 1px solid #e5e5e5;
 }
 .el-row:nth-child(2)>.right {
   text-align: center;
