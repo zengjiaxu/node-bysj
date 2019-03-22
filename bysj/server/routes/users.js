@@ -70,7 +70,7 @@ router.post('/verify',async (ctx,next)=>{
     secure: true, 
     auth: {
       user: '79858318@qq.com',
-      pass: 'sztpvzzofabobjfh'
+      pass: 'hdykcwckepgabhah'
     }
   })
   let ko = {

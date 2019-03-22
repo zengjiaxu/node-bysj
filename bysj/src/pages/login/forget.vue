@@ -4,12 +4,12 @@
     <el-form-item label="邮箱" prop="email">
       <el-input v-model="formLabelAlign.email"></el-input>
     </el-form-item>
-    <el-form-item label="验证码" prop="yzm">
+    <el-form-item label="密码" prop="yzm">
       <el-input v-model="formLabelAlign.yzm"></el-input>
     </el-form-item>
   </el-form>
-  <el-button @click="sendMsg" :disabled="isDisabledOne" type="primary">发送验证码</el-button>
-  <span v-show="isShow">请{{timers}}秒后发送</span>
+  <el-button @click="sendMsg" :disabled="isDisabledOne" type="primary">获取密码</el-button>
+  <span v-show="isShow">请{{timers}}秒后获取</span>
   <el-button @click="sure" :disabled="isDisabledTwo" type="success">确认</el-button>
  </div>
 </template>
@@ -32,8 +32,8 @@ export default {
         { message: '请输入正确的邮箱格式', trigger: 'blur' }
         ],
         yzm: [
-        { required: true,type: 'string', message: '请输入验证码', trigger: 'blur' },
-        { min: 4, max: 4, message: '长度为4个字符', trigger: 'blur' }
+        { required: true,type: 'string', message: '请输入密码', trigger: 'blur' },
+        { min: 6, max: 6, message: '长度为6个字符', trigger: 'blur' }
         ]
     },
     isDisabledOne:false,
@@ -111,12 +111,12 @@ methods:{
   margin  auto
   text-align center
   .el-form-item:nth-child(2)
-    padding-right 118px
+    padding-right 132px
   .el-button
     width 130px
   .el-button:nth-child(2)
     position absolute
-    right 0
+    right 14px
     top 77px
   span
     position absolute
