@@ -1,5 +1,6 @@
 <template>
  <div class="login">
+   <p>登录</p>
   <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
     <el-form-item label="账号" prop="name">
       <el-input v-model="formLabelAlign.name"></el-input>
@@ -8,7 +9,7 @@
       <el-input v-model="formLabelAlign.pass"></el-input>
     </el-form-item>
   </el-form>
-  <el-button @click="loginFrom">登录</el-button>
+  <el-button @click="loginFrom" type="success">登录</el-button>
   <router-link to="/forget">忘记密码</router-link>
  </div>
 </template>
@@ -66,7 +67,7 @@ methods:{
 .login
   background #ffffff
   width 500px
-  height 160px
+  height 260px
   border 1px solid #cccccc
   border-radius 5px
   padding 15px
@@ -88,4 +89,6 @@ methods:{
     text-decoration none
   a:hover
     text-decoration underline
+  p
+    font-size 20px
 </style>
