@@ -4,7 +4,7 @@
     <el-form-item label="邮箱" prop="email">
       <el-input v-model="formLabelAlign.email"></el-input>
     </el-form-item>
-    <el-form-item label="密码" prop="yzm">
+    <el-form-item label="验证码" prop="yzm">
       <el-input v-model="formLabelAlign.yzm"></el-input>
     </el-form-item>
   </el-form>
@@ -32,8 +32,8 @@ export default {
         { message: '请输入正确的邮箱格式', trigger: 'blur' }
         ],
         yzm: [
-        { required: true,type: 'string', message: '请输入密码', trigger: 'blur' },
-        { min: 6, max: 6, message: '长度为6个字符', trigger: 'blur' }
+        { required: true,type: 'string', message: '请输入验证码', trigger: 'blur' },
+        { min: 4, max: 4, message: '长度为4个字符', trigger: 'blur' }
         ]
     },
     isDisabledOne:false,

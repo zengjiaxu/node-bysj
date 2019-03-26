@@ -80,6 +80,8 @@ methods:{
   text-align center
   .el-button
     width 130px
+  .el-form
+    margin-top 30px
   a
     position absolute
     right 15px

@@ -84,6 +84,8 @@ methods: {
   text-align center
   .el-button
     width 130px
+  .el-form
+    margin-top 30px
   p
     font-size 20px
 </style>
