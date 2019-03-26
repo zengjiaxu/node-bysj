@@ -90,7 +90,7 @@ export default {
 <style scoped lang="stylus">
 .formInfo
     width 400px
-    height 600px
+    height 500px
     border 1px solid #cccccc
     padding 15px
     border-radius 5px
@@ -98,6 +98,8 @@ export default {
     left 50%
     top 50%
     transform: translate(-50%,-50%);
+    .el-form
+      margin-top 30px
     p
         text-align center
         font-size 20px
