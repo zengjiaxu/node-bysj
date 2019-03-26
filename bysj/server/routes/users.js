@@ -131,5 +131,24 @@ router.post('/Exit',function (ctx,next) {
  }
 })
 
+//上传信息
+router.post('/InsertUserInfo',function (ctx,next) {
+  //数据库插入操作
+  //...相应逻辑
+  ctx.body={
+    msg:'上传成功'
+  }
+})
+//获取用户信息
+router.post('/GetUserInfo',function (ctx,next) {
+//数据库查询操作
+//...相应逻辑
+// if('查询失败'){
+//   ctx.body = {
+//     msg:'请上传个人信息'
+//   }
+// }
+})
+
 
 module.exports = router

@@ -21,12 +21,14 @@
 
 
         </el-form>
-        <el-button>上传</el-button>
+        <el-button @click="submitUserInfo">上传</el-button>
+        <el-button @click="updateUserInfo">修改</el-button>
      </div>
  </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name:'userInfo',
   data () {
@@ -36,7 +38,8 @@ export default {
         name: '',
         age: '',
         identity: '',
-        address:''
+        address:'',
+        email:''
         },
         rules: {
         name: [
@@ -60,9 +63,29 @@ export default {
         ]
     }
     }
+  },
+  methods: {
+  submitUserInfo () {
+      this.$refs.ruleForm.validate((val)=>{
+        if(val){//表单验证通过
+            axios.post('http://localhost:3000/users/InsertUserInfo',{
+            user:this.formLabelAlign.name,
+            age:this.formLabelAlign.age,
+            identity:this.formLabelAlign.identity,
+            address:this.formLabelAlign.address,
+            email:this.formLabelAlign.email
+          }).then(this.getInfo,(err)=>console.log(err))
+        }else{//表单验证不通过
+          alert('请根据提示输入正确的数据')
+        }
+      })
+  },
+  getInfo (res) {
+      this.$message(res.data.msg)
+      console.log(res)
   }
 }
-
+}
 </script>
 <style scoped lang="stylus">
 .formInfo

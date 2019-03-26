@@ -5,6 +5,7 @@ import Login from '../pages/login/login'
 import Register from '../pages/register/register'
 import Forget from '../pages/login/forget.vue'
 import UserInfo from '../pages/userInfo/userInfo.vue'
+import HouseDetail from '../pages/HouseDetail/HouseDetail.vue'
 Vue.use(Router)
 export default new Router({
     routes: [
@@ -32,6 +33,11 @@ export default new Router({
         path:'/userInfo',
         name: 'UserInfo',
         component: UserInfo
+      },
+      {
+        path:'/userInfo',
+        name: 'UserInfo',
+        component:HouseDetail
       }
     ]
   })

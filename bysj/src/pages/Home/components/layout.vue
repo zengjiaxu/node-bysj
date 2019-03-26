@@ -39,7 +39,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-import axios from 'axios'
 export default {
   data(){
     return{
@@ -188,5 +187,8 @@ margin-top: 10px;
 .el-row:nth-child(2){
   margin-top: 10px;
   height: 169px;
+}
+a{
+  text-decoration: none
 }
 </style>
