@@ -35,9 +35,10 @@ export default new Router({
         component: UserInfo
       },
       {
-        path:'/userInfo',
-        name: 'UserInfo',
-        component:HouseDetail
+        path:'/houseDetail',
+        name: 'houseDetail',
+        component:HouseDetail,
+        props: true
       }
     ]
   })

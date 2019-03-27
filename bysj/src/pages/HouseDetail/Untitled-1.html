@@ -1,0 +1,48 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>根据地址查询经纬度</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+</head>
+<body style="background:#CBE1FF">
+    <form id="form1" runat="server">
+    <div style="width:730px;margin:auto;">   
+        要查询的地址：<input id="text_" type="text" value="上海" runat="server" style="margin-right:100px;"/>
+        查询结果(经纬度)：<input id="result_" type="text" />
+        <input type="button" value="查询" onclick="searchByStationName();"/>
+        <hr />
+        <div id="container" 
+            style="position: absolute;
+                margin-top:30px; 
+                width: 730px; 
+                height: 590px; 
+                top: 50; 
+                border: 1px solid gray;
+                overflow:hidden;">
+                <uc1:LansiMap ID="LansiMap1" runat="server" />
+        </div>
+    </div>
+    </form>
+</body>
+<script type="text/javascript">
+    var map = new BMap.Map("container");
+
+    map.centerAndZoom(new BMap.Point(121.4, 31.2), 11);
+    map.addControl(new BMap.NavigationControl());
+
+    var localSearch = new BMap.LocalSearch(map);
+
+function searchByStationName() {
+
+    var keyword = document.getElementById("text_").value;
+    localSearch.setSearchCompleteCallback(function (searchResult) {
+        var poi = searchResult.getPoi(0);
+        document.getElementById("result_").value = poi.point.lng + "," + poi.point.lat;
+
+    });
+    localSearch.search(keyword);
+} 
+</script>
+</html>

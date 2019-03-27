@@ -4,12 +4,12 @@
             <div class="top"><span>房源信息</span></div>
             <div class="center">
                 <ul>
-                    <li v-for="(item,index) of houseSource" :key="index">
+                    <li v-for="item of houseSource" :key="item.id" @click="toDetail(item.id)">
                         <img src="../../../assets/fw1.jpg" alt="">
-                        <p class="size">三室一厅</p>
-                        <p class="name">联系人:曾佳徐</p>
-                        <p class="phone">联系电话：110</p>
-                        <p class="bPrice"><span class="price">￥2000</span>/月</p>
+                        <p class="size">{{item.size}}</p>
+                        <p class="address">地理位置：{{item.address}}</p>
+                        <p class="phone">联系电话：{{item.phone}}</p>
+                        <p class="bPrice"><span class="price">￥{{item.price}}</span>/月</p>
                     </li>
                 </ul>
             </div>
@@ -22,8 +22,22 @@ export default {
   data () {
     return {
         msg:[1],
-        houseSource:[1,2,3,4,5,6,7,8,9]
+        houseSource:[
+            {id:'1',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'2000',img:'../../../assets/fw1.jpg'},
+            {id:'2',size:'一室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1000',img:'../../../assets/fw1.jpg'},
+            {id:'3',size:'三室二厅',address:'浙江省衢州市',phone:'15898913974',price:'3000',img:'../../../assets/fw1.jpg'},
+            {id:'4',size:'二室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1500',img:'../../../assets/fw1.jpg'},
+            {id:'5',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'2000',img:'../../../assets/fw1.jpg'},
+            {id:'6',size:'一室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1000',img:'../../../assets/fw1.jpg'},
+            {id:'7',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1500',img:'../../../assets/fw1.jpg'},
+            {id:'8',size:'三室二厅',address:'浙江省衢州市',phone:'15898913974',price:'3000',img:'../../../assets/fw1.jpg'},
+            {id:'9',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'2000',img:'../../../assets/fw1.jpg'}]
     }
+  },
+  methods:{
+      toDetail (x) {
+          this.$router.push({name:'houseDetail',query:{id:x}})
+      }
   }
 }
 </script>
@@ -55,6 +69,7 @@ export default {
           float left
           margin 10px 0 0 11px
           position relative
+          cursor pointer
           img 
             width 100%
             height 250px
