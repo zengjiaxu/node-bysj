@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import myHeader from './components/Header.vue'
+import myHeader from './components/header.vue'
 import myFoot from './components/foot.vue'
 import myLayout from './components/layout.vue'
 import myHouse from './components/houseSource.vue'

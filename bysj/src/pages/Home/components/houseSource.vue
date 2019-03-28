@@ -62,8 +62,8 @@ export default {
         overflow scroll
         ul li
           list-style none
-          width 32%
-          height 332px
+          width 20.8vw
+          height 18vw
           margin 0
           padding 0
           float left
@@ -72,7 +72,7 @@ export default {
           cursor pointer
           img 
             width 100%
-            height 250px
+            height 69%
           p
             font-size 14px
             color #999

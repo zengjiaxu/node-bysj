@@ -18,20 +18,32 @@
               </div>
               <div id="allmap"></div>
           </div>
+          <div class="subscribe">
+              <div class="top1"><span>查看评价</span></div>
+            <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="textarea"
+            resize="none">
+            </el-input>
+            <el-button type="primary" @click="submitScribe">发布</el-button>
+          </div>
       </el-col>
     </el-row>
  </div>
 </template>
 
 <script>
-import myHeader from '../Home/components/Header.vue'
+import myHeader from '../Home/components/header.vue'
 export default {
   data () {
     return {
         id:'1',
         address:'浙江省衢州市衢江区振兴西路238号',
         jd:'',
-        wd:''
+        wd:'',
+        textarea:''
     }
   },
   components:{
@@ -72,29 +84,45 @@ export default {
 
 </script>
 <style scoped lang="stylus">
+.subscribe >>> .el-textarea__inner
+    padding-right 85px
+.subscribe >>> .el-button
+    position absolute
+    right 5px
+    bottom 5px
+    line-height 1px
 .top
     width 100%
     line-height 50px
     margin-top 20px
-    background #c0ac85
+    background: linear-gradient(to right, rgb(243, 182, 74) 2%, rgb(242, 197, 69) 97%) rgb(243, 182, 74)
+    border-radius 7px 7px 0 0
+    color:#ffff
+    span
+        margin-left 10px
+.top1
+    width 100%
+    line-height 50px
+    margin-top 20px
+    background linear-gradient(to right, rgb(18, 210, 198) 2%, rgb(14, 190, 212) 97%) rgb(18, 210, 198);
     border-radius 7px 7px 0 0
     color:#ffff
     span
         margin-left 10px
 .main
     width 100%
-    height 500px
+    height 400px
     box-sizing border-box
-    border 1px solid #c0ac85
+    border 1px solid #c
     border-top none
     padding 10px
     .detail
-        width 500px
+        width 44%
         height 100%
         float left
         .img 
             width 100%
-            height 350px
+            height 60%
             img 
                 width 100%
                 height 100%
@@ -119,8 +147,10 @@ export default {
                 color orange
                 font-size 30px
     #allmap
-        width 745px
+        width 55%
         height 100%
         background #000
         float right
+.subscribe
+    position relative
 </style>
