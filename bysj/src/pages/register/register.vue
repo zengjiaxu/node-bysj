@@ -62,6 +62,7 @@ methods: {
       alert(res.data.msg)
     }else{
       alert('注册失败')
+      console.log(res)
     }
   }
 }

@@ -9,7 +9,8 @@ const cors = require('koa2-cors')
 const session = require('koa-session')
 const index = require('./routes/index')
 const users = require('./routes/users')
-
+const Sequelize = require('sequelize');
+const config = require('./config/config.js');
 
 // error handler
 onerror(app)

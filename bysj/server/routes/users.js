@@ -1,18 +1,57 @@
 const router = require('koa-router')()
 const nodeMailer = require('nodemailer') //使用nodemail包发送邮件
 const axios = require('axios')
+const Sequelize = require('sequelize');
+const config = require('../config/config.js');
+const Koa = require('koa')
+const app = new Koa()
+
+//创建连接池
+let sequelize = new Sequelize(config.database, config.username, config.password, {
+  host: config.host,
+  dialect: 'mysql',
+  pool: {
+      max: 5,
+      min: 0,
+      idle: 30000
+  }
+});
+
+//初始化表格模型
+let Pet = sequelize.define('user', {
+  id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true
+  },
+  username: Sequelize.STRING(100),
+  password: Sequelize.STRING(100),
+  email: Sequelize.STRING(100)
+}, {
+      timestamps: false
+  });
 
 router.prefix('/users')
 //注册接口
-router.post('/register', function (ctx, next) {
+router.post('/register',async function (ctx, next) {
   if(ctx.request.body){
-    console.log(ctx.request.body)
-    ctx.body = {
-      code: 1,
-      msg: '注册成功'
-    }
-  }
-})
+     // 增加数据（注册）
+     await Pet.create({
+        username: ctx.request.body.user,
+        password:ctx.request.body.pass,
+        email: ctx.request.body.email
+        }).then(function (p) {
+          console.log('created.' + JSON.stringify(p));
+        }).catch(function (err) {
+          console.log('failed: ' + err);
+        }).then(()=>{
+          ctx.body={
+            code:1,
+            msg:'注册成功'
+          }
+        })
+      }
+    })
+
 //登录接口
 router.post('/login',async function (ctx, next) {
   const {user,pass} = ctx.request.body
