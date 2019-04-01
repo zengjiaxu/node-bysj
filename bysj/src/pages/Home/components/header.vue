@@ -71,6 +71,7 @@ export default {
   methods: {
      getInfo (res) {
        if(this.getCookie('session_id')){
+         console.log(res)
          this.haveSession = true
          this.name = res.data.user
          this.$emit('getN',this.name)
@@ -83,6 +84,9 @@ export default {
        console.log(key,path)
        if(key === '3-1'){
          this.$router.push('/userInfo')
+       }
+       if(key = '3-2'){
+         this.$router.push('/submitHouse')
        }
      },
      handleExit () {

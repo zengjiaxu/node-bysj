@@ -1,6 +1,9 @@
 <template>
  <div class="forget">
   <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
+    <el-form-item label="用户名" prop="user">
+      <el-input v-model="formLabelAlign.user"></el-input>
+    </el-form-item>
     <el-form-item label="邮箱" prop="email">
       <el-input v-model="formLabelAlign.email"></el-input>
     </el-form-item>
@@ -23,10 +26,15 @@ export default {
     return {
       labelPosition: 'left',
       formLabelAlign: {
+        user:'',
         email: '',
         yzm:'',
     },
     rules: {
+        user: [
+        { required: true,type: 'string', message: '请输入账号', trigger: 'blur' },
+        { min: 5, max: 12, message: '长度在 5 到 12 个字符', trigger: 'blur' }
+        ],
         email: [
         { required: true,type: 'email', message: '请输入邮箱', trigger: 'blur' },
         { message: '请输入正确的邮箱格式', trigger: 'blur' }
@@ -51,6 +59,7 @@ methods:{
             axios.defaults.withCredentials = true//允许跨域访问
             axios.post('http://localhost:3000/users/verify',{
             email:this.formLabelAlign.email,
+            user:this.formLabelAlign.user
           }).then(this.getInfo,(err)=>console.log(err))
       }else{
         alert('请根据提示输入正确的数据')
@@ -99,7 +108,7 @@ methods:{
 .forget
   background #ffffff
   width 500px
-  height 160px
+  height 227px
   border 1px solid #cccccc
   border-radius 5px
   padding 15px
@@ -110,14 +119,14 @@ methods:{
   bottom 0
   margin  auto
   text-align center
-  .el-form-item:nth-child(2)
+  .el-form-item:nth-child(3)
     padding-right 132px
   .el-button
     width 130px
   .el-button:nth-child(2)
     position absolute
     right 14px
-    top 77px
+    top 139px
   span
     position absolute
     right 39px

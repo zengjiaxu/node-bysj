@@ -6,6 +6,7 @@ import Register from '../pages/register/register'
 import Forget from '../pages/login/forget.vue'
 import UserInfo from '../pages/userInfo/userInfo.vue'
 import HouseDetail from '../pages/HouseDetail/HouseDetail.vue'
+import SubmitHouse from '../pages/HouseDetail/SubmitHouse.vue'
 Vue.use(Router)
 export default new Router({
     routes: [
@@ -39,6 +40,10 @@ export default new Router({
         name: 'houseDetail',
         component:HouseDetail,
         props: true
+      },{
+        path:'/submitHouse',
+        name:'submitHouse',
+        component:SubmitHouse
       }
     ]
   })

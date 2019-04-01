@@ -34,8 +34,18 @@ router.prefix('/users')
 //注册接口
 router.post('/register',async function (ctx, next) {
   if(ctx.request.body){
-     // 增加数据（注册）
-     await Pet.create({
+    const {user,pass,email} = ctx.request.body
+    await Pet.findAll({
+      where:{
+        username:user
+      }
+    }).then((p)=>{
+      for (let i of p) {
+        var res = JSON.stringify(i)
+    }
+    if(!res){
+      //插入数据
+      Pet.create({
         username: ctx.request.body.user,
         password:ctx.request.body.pass,
         email: ctx.request.body.email
@@ -43,61 +53,72 @@ router.post('/register',async function (ctx, next) {
           console.log('created.' + JSON.stringify(p));
         }).catch(function (err) {
           console.log('failed: ' + err);
-        }).then(()=>{
-          ctx.body={
-            code:1,
-            msg:'注册成功'
-          }
         })
+      return new Promise((resolve,reject)=>{
+        resolve("注册成功")
+      })
+    }else{
+      return new Promise((resolve,reject)=>{
+        resolve("用户名已存在")
+      })
+    }
+    }).catch((err)=>{
+        console.log('failed: ' + err);
+    }).then((x)=>{
+      ctx.body = {
+        code:1,
+        msg:x
       }
+    })
+    }
     })
 
 //登录接口
 router.post('/login',async function (ctx, next) {
   const {user,pass} = ctx.request.body
-  if(!ctx.session.isNew){//判断会话是不是新的
-    console.log(ctx.session.session_id)
-    ctx.body = {
-      code:3,
-      user:ctx.session.user,
-      msg:'请不要重复登录'
+  await Pet.findAll({
+    where:{
+      username: ctx.request.body.user,
     }
-  }
-  else if(user === 'admin' && pass === '123456'){
-    ctx.set("Access-Control-Allow-Credentials", true)//允许跨域设置cookie
-    ctx.session.user = user
-    ctx.session.pass = pass
-    /*ctx.cookies.set(
-      'user',user,{
-          domain:'localhost', // 写cookie所在的域名
-          path:'/',       // 写cookie所在的路径
-          maxAge: 7200000,   // cookie有效时长
-          expires:new Date('2029-03-08'), // cookie失效时间
-          httpOnly:false,  // 是否只用于http请求中获取
-          overwrite:true,  // 是否允许重写
-          signed:true
-      })
-       ctx.cookies.set(
-        'pass',pass,{
-            domain:'localhost', // 写cookie所在的域名
-            path:'/',       // 写cookie所在的路径
-            maxAge: 7200000,   // cookie有效时长
-            expires:new Date('2029-03-08'), // cookie失效时间
-            httpOnly:false,  // 是否只用于http请求中获取
-            overwrite:true,  // 是否允许重写
-            signed:true
-        }) */
-    ctx.body = {
-      code: 1,
-      msg: '登录成功',
-      sess: ctx.session.user
+  }).then((p)=>{
+    for (let i of p) {
+        var res = JSON.stringify(i)
     }
-  }else{
-    ctx.body = {
-      code:0,
-      msg: '账号或密码错误'
+    var objUser = JSON.parse(res)
+    console.log(objUser.password)
+    return new Promise((res,rej)=>{
+      res(objUser.password)
+    })
+  }).catch((err)=>{
+    console.log('failed: ' + err);
+  }).then((password) => {
+    if(!ctx.session.isNew){//判断会话是不是新的
+      ctx.set("Access-Control-Allow-Credentials", true)//允许跨域设置cookie
+      ctx.session.user = user
+      ctx.session.pass = pass
+      ctx.body = {
+        code:3,
+        sess:ctx.session.user,
+        msg:'请不要重复登录'
+      }
     }
-  }
+    else if(pass === password){
+      ctx.set("Access-Control-Allow-Credentials", true)//允许跨域设置cookie
+      ctx.session.user = user
+      ctx.session.pass = pass
+      ctx.body = {
+        code: 1,
+        msg: '登录成功',
+        sess: ctx.session.user
+      }
+    }else{
+      ctx.body = {
+        code:0,
+        msg: '账号或密码错误'
+      }
+    }
+  })
+  
 })
 
 
@@ -116,7 +137,8 @@ router.post('/verify',async (ctx,next)=>{
     code: Math.random().toString(16).slice(2,6).toUpperCase(),
     pass: Math.random().toString(16).slice(2,8).toUpperCase(),
     //expire: new Date().getTime+60*60*1000,
-    email: ctx.request.body.email
+    email: ctx.request.body.email,
+    user: ctx.request.body.user
   }
   let mailOptions = {//发送内容
     from: '"认证邮件" <79858318@qq.com>',
@@ -129,10 +151,23 @@ router.post('/verify',async (ctx,next)=>{
       return console.log('错误是:'+error)
     } 
   })
-  ctx.body = {
-    code: 1,
-    msg: '验证码已发送'
-  }
+  await Pet.update({
+    password: ko.pass//修改的字段对应的内容
+  }, {
+      where: {
+        username: ko.user//查询条件
+      }
+    })
+    .then(((p)=>{
+      for(let i of p){
+        console.log(JSON.stringify(i))
+      }
+    })).catch(err => console.log('failed: ' + err)).then(()=>{
+      ctx.body = {
+        code: 1,
+        msg: '验证码已发送'
+      }
+    })
   axios.post('http://localhost:3000/users/forget',{
     code:ko.code
   }).then((res)=>{console.log(res)})
