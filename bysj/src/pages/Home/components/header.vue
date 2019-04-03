@@ -96,7 +96,7 @@ export default {
           }).then(this.Exitinfo,(err)=>console.log(err))
      },
      Exitinfo (res) {
-       alert(res.data.msg)
+       this.$message(res.data.msg)
        this.setCookie('session_id','',-1)
        this.setCookie('user','',-1)
        if(this.getCookie('session_id')){

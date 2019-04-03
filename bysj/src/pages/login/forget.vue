@@ -1,19 +1,25 @@
 <template>
- <div class="forget">
+ <div class="forget" :class="{newPass:haveYzm}">
   <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
-    <el-form-item label="用户名" prop="user">
-      <el-input v-model="formLabelAlign.user"></el-input>
-    </el-form-item>
-    <el-form-item label="邮箱" prop="email">
-      <el-input v-model="formLabelAlign.email"></el-input>
-    </el-form-item>
-    <el-form-item label="验证码" prop="yzm">
-      <el-input v-model="formLabelAlign.yzm"></el-input>
+    <div v-show="!haveYzm">
+      <el-form-item label="用户名" prop="user">
+        <el-input v-model="formLabelAlign.user"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="formLabelAlign.email"></el-input>
+      </el-form-item>
+      <el-form-item label="验证码" prop="yzm">
+        <el-input v-model="formLabelAlign.yzm"></el-input>
+      </el-form-item>
+    </div>
+    <el-form-item label="新密码" prop="newPass" v-show="haveYzm">
+      <el-input v-model="formLabelAlign.newPass" type="password"></el-input>
     </el-form-item>
   </el-form>
-  <el-button @click="sendMsg" :disabled="isDisabledOne" type="primary">获取密码</el-button>
+  <el-button @click="sendMsg" :disabled="isDisabledOne" type="primary" v-show="!haveYzm">获取验证码</el-button>
   <span v-show="isShow">请{{timers}}秒后获取</span>
-  <el-button @click="sure" :disabled="isDisabledTwo" type="success">确认</el-button>
+  <el-button @click="sure" :disabled="isDisabledTwo" type="success" v-show="!haveYzm">确认</el-button>
+  <el-button @click="submitNewpass"  type="success" v-show="haveYzm">提交</el-button>
  </div>
 </template>
 
@@ -25,10 +31,12 @@ export default {
   data () {
     return {
       labelPosition: 'left',
+      haveYzm:false,
       formLabelAlign: {
         user:'',
         email: '',
         yzm:'',
+        newPass:'',
     },
     rules: {
         user: [
@@ -42,6 +50,10 @@ export default {
         yzm: [
         { required: true,type: 'string', message: '请输入验证码', trigger: 'blur' },
         { min: 4, max: 4, message: '长度为4个字符', trigger: 'blur' }
+        ],
+        newPass: [
+        { required: true,type: 'string', message: '请输入密码', trigger: 'blur' },
+        { min: 5, max: 12, message: '长度在 5 到 12 个字符', trigger: 'blur' }
         ]
     },
     isDisabledOne:false,
@@ -62,7 +74,7 @@ methods:{
             user:this.formLabelAlign.user
           }).then(this.getInfo,(err)=>console.log(err))
       }else{
-        alert('请根据提示输入正确的数据')
+        this.$message('请根据提示输入正确的数据')
       }
    })
  },
@@ -80,7 +92,7 @@ methods:{
      }
    },1000)
    }else{
-     alert('发送失败')
+     this.$message('发送失败')
    }
  },
  sure(){
@@ -95,16 +107,36 @@ methods:{
  },
  getYzm (res) {
    if(res.data.code === "1"){
-     alert(res.data.msg + ",请登录")
-     this.$router.push('/login')
+     this.$message(res.data.msg + ",请填写密码")
+     this.haveYzm = true;
+     this.isShow = false;
+     console.log(this.formLabelAlign.user)
    }else{
-   alert(res.data.msg+",您输入的验证码有误")
+   this.$message(res.data.msg+",您输入的验证码有误")
  }
+ },
+ submitNewpass (res) {
+    // this.$message(res.data.msg)
+   this.$refs.ruleForm.validateField('yzm',(err)=>{
+     if(!err){
+       axios.defaults.withCredentials = true
+       axios.post('http://localhost:3000/users/updatePass',{
+         username:this.formLabelAlign.user,
+         newPass:this.formLabelAlign.newPass
+       }).then(this.updatePass,(err)=>console.log(err))
+     }
+   })
+ },
+ updatePass (res) {
+   this.$message(res.data.msg+'，请登录')
+   this.$router.push('/login')
  }
 }
 }
 </script>
 <style scoped lang="stylus">
+.newPass.forget
+  height 100px
 .forget
   background #ffffff
   width 500px

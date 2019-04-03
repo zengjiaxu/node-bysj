@@ -53,15 +53,15 @@ methods: {
             email:this.formLabelAlign.email
           }).then(this.getInfo,(err)=>console.log(err))
         }else{//表单验证不通过
-          alert('请根据提示输入正确的数据')
+          this.$message('请根据提示输入正确的数据')
         }
       })
   },
   getInfo (res) {
     if(res.data.code === 1){
-      alert(res.data.msg)
+      this.$message(res.data.msg)
     }else{
-      alert('注册失败')
+      this.$message('注册失败')
       console.log(res)
     }
   }

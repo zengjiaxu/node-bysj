@@ -145,7 +145,6 @@ router.post('/verify',async (ctx,next)=>{
   })
   let ko = {
     code: Math.random().toString(16).slice(2,6).toUpperCase(),
-    pass: Math.random().toString(16).slice(2,8).toUpperCase(),
     //expire: new Date().getTime+60*60*1000,
     email: ctx.request.body.email,
     user: ctx.request.body.user
@@ -154,7 +153,7 @@ router.post('/verify',async (ctx,next)=>{
     from: '"认证邮件" <79858318@qq.com>',
     to: ko.email,
     subject: '忘记密码的验证码',
-    html: `你的验证码是${ko.code}新密码是${ko.pass}`
+    html: `你的验证码是${ko.code}`
   }
   await transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -189,6 +188,7 @@ let code
 router.post('/forget',async (ctx,next)=>{
   if(ctx.request.body.code){
      code  = ctx.request.body.code
+     console.log(code)
      ctx.body = {
        msg:"请求成功"
      }
@@ -208,6 +208,39 @@ router.post('/forget',async (ctx,next)=>{
   }
 
 })
+
+//修改密码
+router.post('/updatePass',async function (ctx,next) {
+  if(ctx.request.body){
+    const {newPass,username} = ctx.request.body
+    await Pet.update({
+       password:newPass
+      }, {
+          where: {
+            username//查询条件
+          }
+        })
+        .then(((p)=>{
+          for(let i of p){
+            console.log(JSON.stringify(i))
+          }
+          return new Promise((res,rej)=>{
+                res("修改成功")
+          })
+        })).catch((err) => {
+            console.log('failed: ' + err)
+            return new Promise(()=>{(res,rej)=>{
+                res("修改失败")
+          }})
+    }).then((x)=>{
+          ctx.body = {
+            code: 1,
+            msg: x
+          }
+        })
+}
+})
+
 
 //退出接口
 router.post('/Exit',function (ctx,next) {

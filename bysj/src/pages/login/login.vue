@@ -6,7 +6,7 @@
       <el-input v-model="formLabelAlign.name"></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="pass">
-      <el-input v-model="formLabelAlign.pass"></el-input>
+      <el-input v-model="formLabelAlign.pass" type="password"></el-input>
     </el-form-item>
   </el-form>
   <el-button @click="loginFrom" type="success">登录</el-button>
@@ -50,7 +50,7 @@ methods:{
             pass:this.formLabelAlign.pass,
           }).then(this.getInfo,(err)=>console.log(err))
       }else{
-        alert('请根据提示输入正确的数据')
+        this.$message('请根据提示输入正确的数据')
       }
     })
   },
@@ -59,10 +59,10 @@ methods:{
       this.user = res.data.sess
       this.setCookie('user',this.user,3)
        this.$store.commit('changeUser',this.user)
-      alert(res.data.msg)
+      this.$message(res.data.msg)
       this.$router.push('/')
     }else{
-      alert(res.data.msg)
+      this.$message(res.data.msg)
     }
   },
    setCookie (name, value, day) {
