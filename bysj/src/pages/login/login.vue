@@ -17,11 +17,13 @@
 <script>
 import axios from 'axios'
 import qs from 'qs'
+import { mapState } from 'vuex'
 export default {
   name: 'Login',
   data () {
     return {
       labelPosition: 'left',
+      user:'',
       formLabelAlign: {
         name: '',
         pass: ''
@@ -54,10 +56,22 @@ methods:{
   },
   getInfo (res) {
     if(res.data.code === 1){
+      this.user = res.data.sess
+      this.setCookie('user',this.user,3)
+       this.$store.commit('changeUser',this.user)
       alert(res.data.msg)
       this.$router.push('/')
     }else{
       alert(res.data.msg)
+    }
+  },
+   setCookie (name, value, day) {
+   if(day !== 0){     //当设置的时间等于0时，不设置expires属性，cookie在浏览器关闭后删除
+     var expires = day * 24 * 60 * 60 * 1000;
+     var date = new Date(+new Date()+expires);
+     document.cookie = name + "=" + escape(value) + ";expires=" + date.toUTCString();
+   }else{
+     document.cookie = name + "=" + escape(value);
     }
   }
 }

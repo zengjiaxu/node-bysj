@@ -21,8 +21,10 @@
 
 
         </el-form>
-        <el-button @click="submitUserInfo">上传</el-button>
-        <el-button @click="updateUserInfo">修改</el-button>
+        <div class="btnCtn">
+          <el-button @click="submitUserInfo" type="success">上传</el-button>
+          <el-button @click="updateUserInfo" type="primary">保存</el-button>
+        </div>
      </div>
  </div>
 </template>
@@ -73,17 +75,52 @@ export default {
             age:this.formLabelAlign.age,
             identity:this.formLabelAlign.identity,
             address:this.formLabelAlign.address,
-            email:this.formLabelAlign.email
+            email:this.formLabelAlign.email,
+            username:this.getCookie('user')
           }).then(this.getInfo,(err)=>console.log(err))
         }else{//表单验证不通过
           alert('请根据提示输入正确的数据')
         }
       })
   },
+  updateUserInfo () {
+      this.$refs.ruleForm.validate((val)=>{
+        if(val){//表单验证通过
+            axios.post('http://localhost:3000/users/UpdateUserInfo',{
+            user:this.formLabelAlign.name,
+            age:this.formLabelAlign.age,
+            identity:this.formLabelAlign.identity,
+            address:this.formLabelAlign.address,
+            email:this.formLabelAlign.email,
+            username:this.getCookie('user')
+          }).then(this.updateInfo,(err)=>console.log(err))
+        }else{//表单验证不通过
+          alert('请根据提示输入正确的数据')
+        }
+      })
+  },
+  updateInfo (res) {
+      this.$message(res.data.msg)
+      console.log(res)
+  },
   getInfo (res) {
       this.$message(res.data.msg)
       console.log(res)
+  },
+  getCookie (c_name) {    
+  if (document.cookie.length>0)
+  {
+  let c_start=document.cookie.indexOf(c_name + "=")
+  if (c_start!=-1)
+  { 
+   c_start=c_start + c_name.length+1 
+  let c_end=document.cookie.indexOf(";",c_start)
+  if (c_end==-1) c_end=document.cookie.length
+  return unescape(document.cookie.substring(c_start,c_end))
   }
+  }
+  return "";
+}
 }
 }
 </script>
@@ -103,4 +140,9 @@ export default {
     p
         text-align center
         font-size 20px
+    .btnCtn
+      display flex
+      .el-button
+        flex 1
+        margin 5px
 </style>

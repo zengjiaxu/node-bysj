@@ -73,7 +73,7 @@ export default {
        if(this.getCookie('session_id')){
          console.log(res)
          this.haveSession = true
-         this.name = res.data.user
+         this.name = this.getCookie('user')
          this.$emit('getN',this.name)
          this.$emit('hasSess',this.haveSession)
        }else{
@@ -98,9 +98,10 @@ export default {
      Exitinfo (res) {
        alert(res.data.msg)
        this.setCookie('session_id','',-1)
+       this.setCookie('user','',-1)
        if(this.getCookie('session_id')){
          this.haveSession = true
-         this.name = res.data.user
+         this.name = res.data.sess
          this.$emit('hasSess',this.haveSession)
        }else{
          this.haveSession = false
@@ -121,24 +122,18 @@ export default {
       }
       return "";
     },
-     setCookie (name, value, day) {
-     if(day !== 0){     //当设置的时间等于0时，不设置expires属性，cookie在浏览器关闭后删除
-       var expires = day * 24 * 60 * 60 * 1000;
-       var date = new Date(+new Date()+expires);
-       document.cookie = name + "=" + escape(value) + ";expires=" + date.toUTCString();
-     }else{
-       document.cookie = name + "=" + escape(value);
-      }
+   setCookie (name, value, day) {
+   if(day !== 0){     //当设置的时间等于0时，不设置expires属性，cookie在浏览器关闭后删除
+     var expires = day * 24 * 60 * 60 * 1000;
+     var date = new Date(+new Date()+expires);
+     document.cookie = name + "=" + escape(value) + ";expires=" + date.toUTCString();
+   }else{
+     document.cookie = name + "=" + escape(value);
     }
+  }
   },
   mounted () {
-    axios.defaults.withCredentials = true//允许跨域访问
-            axios.post('http://localhost:3000/users/login',{
-            msg:'req',
-          }).then(this.getInfo,(err)=>console.log(err))
-  },
-  beforeCreat () {
-
+    this.getInfo()
   }
 }
 

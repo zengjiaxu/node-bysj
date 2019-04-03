@@ -75,49 +75,59 @@ router.post('/register',async function (ctx, next) {
 
 //登录接口
 router.post('/login',async function (ctx, next) {
-  const {user,pass} = ctx.request.body
-  await Pet.findAll({
-    where:{
-      username: ctx.request.body.user,
+  const {user,pass,msg} = ctx.request.body
+  if(msg){
+    ctx.body = {
+      code: 1,
+      msg: '登录成功',
+      sess: ctx.session.user
     }
-  }).then((p)=>{
-    for (let i of p) {
-        var res = JSON.stringify(i)
-    }
-    var objUser = JSON.parse(res)
-    console.log(objUser.password)
-    return new Promise((res,rej)=>{
-      res(objUser.password)
+  }else
+  {
+    await Pet.findAll({
+      where:{
+        username: ctx.request.body.user,
+      }
+    }).then((p)=>{
+      for (let i of p) {
+          var res = JSON.stringify(i)
+      }
+      var objUser = JSON.parse(res)
+      console.log(objUser.password)
+      return new Promise((res,rej)=>{
+        res(objUser.password)
+      })
+    }).catch((err)=>{
+      console.log('failed: ' + err);
+    }).then((password) => {
+      if(!ctx.session.isNew){//判断会话是不是新的
+        ctx.set("Access-Control-Allow-Credentials", true)//允许跨域设置cookie
+        ctx.session.user = user
+        ctx.session.pass = pass
+        ctx.body = {
+          code:3,
+          sess:ctx.session.user,
+          msg:'请不要重复登录'
+        }
+      }
+      else if(pass === password){
+        ctx.set("Access-Control-Allow-Credentials", true)//允许跨域设置cookie
+        ctx.session.user = user
+        ctx.session.pass = pass
+        ctx.body = {
+          code: 1,
+          msg: '登录成功',
+          sess: ctx.session.user
+        }
+      }else{
+        ctx.body = {
+          code:0,
+          msg: '账号或密码错误'
+        }
+      }
     })
-  }).catch((err)=>{
-    console.log('failed: ' + err);
-  }).then((password) => {
-    if(!ctx.session.isNew){//判断会话是不是新的
-      ctx.set("Access-Control-Allow-Credentials", true)//允许跨域设置cookie
-      ctx.session.user = user
-      ctx.session.pass = pass
-      ctx.body = {
-        code:3,
-        sess:ctx.session.user,
-        msg:'请不要重复登录'
-      }
-    }
-    else if(pass === password){
-      ctx.set("Access-Control-Allow-Credentials", true)//允许跨域设置cookie
-      ctx.session.user = user
-      ctx.session.pass = pass
-      ctx.body = {
-        code: 1,
-        msg: '登录成功',
-        sess: ctx.session.user
-      }
-    }else{
-      ctx.body = {
-        code:0,
-        msg: '账号或密码错误'
-      }
-    }
-  })
+  }
+  
   
 })
 
@@ -204,25 +214,6 @@ router.post('/Exit',function (ctx,next) {
  ctx.body = {
    msg:'退出成功'
  }
-})
-
-//上传信息
-router.post('/InsertUserInfo',function (ctx,next) {
-  //数据库插入操作
-  //...相应逻辑
-  ctx.body={
-    msg:'上传成功'
-  }
-})
-//获取用户信息
-router.post('/GetUserInfo',function (ctx,next) {
-//数据库查询操作
-//...相应逻辑
-// if('查询失败'){
-//   ctx.body = {
-//     msg:'请上传个人信息'
-//   }
-// }
 })
 
 

@@ -9,6 +9,7 @@ const cors = require('koa2-cors')
 const session = require('koa-session')
 const index = require('./routes/index')
 const users = require('./routes/users')
+const userInfo = require('./routes/userInfo')
 const Sequelize = require('sequelize');
 const config = require('./config/config.js');
 
@@ -53,6 +54,7 @@ app.use(session(options,app));
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(userInfo.routes(), userInfo.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
