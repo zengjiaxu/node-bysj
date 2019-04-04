@@ -1,8 +1,8 @@
+
 const router = require('koa-router')()
 const Sequelize = require('sequelize');
 const config = require('../config/config.js');
-const Koa = require('koa')
-const app = new Koa()
+
 
 //创建连接池
 let sequelize = new Sequelize(config.database, config.username, config.password, {
@@ -16,88 +16,60 @@ let sequelize = new Sequelize(config.database, config.username, config.password,
 });
 
 //初始化表格模型
-let Pet = sequelize.define('userInfo', {
+let Pet = sequelize.define('houseInfo', {
   id: {
       type: Sequelize.INTEGER,
       primaryKey: true
   },
-  user: Sequelize.STRING(100),
-  age: Sequelize.STRING(100),
-  identity: Sequelize.STRING(100),
+  imgUrl: Sequelize.STRING(100),
+  houseLarge: Sequelize.STRING(100),
+  phone: Sequelize.STRING(100),
   address: Sequelize.STRING(100),
-  email: Sequelize.STRING(100),
+  price: Sequelize.STRING(100),
   username: Sequelize.STRING(100)
 }, {
       timestamps: false
   });
 
-  router.prefix('/users')
+  router.prefix('/house')
 
 //上传信息
-router.post('/InsertUserInfo',async function (ctx,next) {
-  const {user,age,identity,address,email,username} = ctx.request.body
+router.post('/InsertHouseInfo',async function (ctx,next) {
+    //数据库插入操作
+  const {imgUrl,houseLarge,phone,address,price,username} = ctx.request.body
   if(username){
     if(ctx.request.body){
-      await Pet.findAll({
-        where:{
-          username:username
-        }
-      }).then((p)=>{
-        for (let i of p) {
-          var res = JSON.stringify(i)
+    
+      Pet.create({imgUrl,houseLarge,phone,address,price,username}).then(function (p) {
+        console.log('created.' + JSON.stringify(p))
+      }).catch(function (err) {
+        console.log('failed: ' + err);
+      })
+      return new Promise((resolve,reject)=>{
+          resolve('上传成功')
+      }).catch((err)=>{
+      console.log('failed',err)
+      }).then((x)=>{
+      ctx.body={
+          code:1,
+          msg:x
       }
-          if(!res){    
-          Pet.create({
-          user,
-          age,
-          identity,
-          address,
-          email,
-          username
-          }).then(function (p) {
-            console.log('created.' + JSON.stringify(p))
-          }).catch(function (err) {
-            console.log('failed: ' + err);
-          })
-          return new Promise((resolve,reject)=>{
-              resolve('上传成功')
-          })
-      }else{
-          return new Promise((resolve,reject)=>{
-              resolve('请勿重复上传')
-          })
+      })
       }
-  }).catch((err)=>{
-  console.log('failed',err)
-  }).then((x)=>{
-  ctx.body={
-      code:1,
-      msg:x
-  }
-  })
-  }
   }else{
-    ctx.body = {
+    ctx.body={
       code:1,
       msg:"请先登录"
-    }
   }
-  //数据库插入操作
+  }
   
     })
 //修改用户信息
-router.post('/UpdateUserInfo',async function (ctx,next) {
-  const {user,age,identity,address,email,username} = ctx.request.body
-  if (username){
+router.post('/updateHouseInfo',async function (ctx,next) {
+  const {imgUrl,houseLarge,phone,address,price,username} = ctx.request.body
+  if(username){
     if(ctx.request.body){
-      await Pet.update({
-          user,
-          age,
-          identity,
-          address,
-          email,
-          username
-        }, {
+      await Pet.update({imgUrl,houseLarge,phone,address,price,username}, {
             where: {
               username//查询条件
             }
@@ -123,13 +95,13 @@ router.post('/UpdateUserInfo',async function (ctx,next) {
   }
   }else{
     ctx.body = {
-      code: 1,
-      msg: "请先登录"
+      code:1,
+      msg:'请先登录'
     }
   }
-    
+ 
 })
-router.post('/GetUserInfo',async function (ctx,next) {
+router.post('/GetHouseInfo',async function (ctx,next) {
     const {username} = ctx.request.body
     if(username){
         await Pet.findAll({
@@ -176,11 +148,6 @@ router.post('/GetUserInfo',async function (ctx,next) {
             }).catch((err)=>{
                 console.log('failed',err)
                 })
-    }else{
-      ctx.body={
-        code:0,
-        data:"请先登录"
-      }
     }
 })
 

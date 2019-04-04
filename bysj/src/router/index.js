@@ -7,6 +7,7 @@ import Forget from '../pages/login/forget.vue'
 import UserInfo from '../pages/userInfo/userInfo.vue'
 import HouseDetail from '../pages/HouseDetail/HouseDetail.vue'
 import SubmitHouse from '../pages/HouseDetail/SubmitHouse.vue'
+import ManageHouse from '../pages/HouseDetail/ManageHouse.vue'
 Vue.use(Router)
 export default new Router({
     routes: [
@@ -40,10 +41,21 @@ export default new Router({
         name: 'houseDetail',
         component:HouseDetail,
         props: true
-      },{
+      },
+      {
         path:'/submitHouse',
         name:'submitHouse',
         component:SubmitHouse
+      }, 
+      {
+        path:'/submitHouse',
+        name:'submitHouse',
+        component:SubmitHouse
+      },
+      {
+        path:'/manageHouse',
+        name:'manageHouse',
+        component:ManageHouse
       }
     ]
   })

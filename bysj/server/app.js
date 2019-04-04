@@ -10,6 +10,7 @@ const session = require('koa-session')
 const index = require('./routes/index')
 const users = require('./routes/users')
 const userInfo = require('./routes/userInfo')
+const houseInfo = require('./routes/houseInfo')
 const Sequelize = require('sequelize');
 const config = require('./config/config.js');
 
@@ -55,6 +56,7 @@ app.use(session(options,app));
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 app.use(userInfo.routes(), userInfo.allowedMethods())
+app.use(houseInfo.routes(), userInfo.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

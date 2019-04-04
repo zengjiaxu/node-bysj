@@ -85,8 +85,11 @@ export default {
        if(key === '3-1'){
          this.$router.push('/userInfo')
        }
-       if(key = '3-2'){
+       if(key === '3-2'){
          this.$router.push('/submitHouse')
+       }
+        if(key === '3-3'){
+         this.$router.push('/manageHouse')
        }
      },
      handleExit () {
