@@ -79,7 +79,7 @@ export default {
             username:this.getCookie('user')
           }).then(this.getInfo,(err)=>console.log(err))
         }else{//表单验证不通过
-          alert('请根据提示输入正确的数据')
+           this.$message('请根据提示输入正确的数据')
         }
       })
   },
@@ -95,13 +95,29 @@ export default {
             username:this.getCookie('user')
           }).then(this.updateInfo,(err)=>console.log(err))
         }else{//表单验证不通过
-          alert('请根据提示输入正确的数据')
+           this.$message('请根据提示输入正确的数据')
         }
       })
   },
   updateInfo (res) {
       this.$message(res.data.msg)
       console.log(res)
+  },
+  getUserInfo (res) {
+    if(res.data.code === 0){
+      console.log(res)
+      alert(res.data.data)
+    }
+    if(res.data.code === 1){
+      const userData = JSON.parse(res.data.data)
+      const {address,age,email,identity,user,username} = userData
+      this.formLabelAlign.name = user
+      this.formLabelAlign.age = ~~age
+      this.formLabelAlign.address = address
+      this.formLabelAlign.email = email
+      this.formLabelAlign.identity = identity
+      this.formLabelAlign.username = username
+    }
   },
   getInfo (res) {
       this.$message(res.data.msg)
@@ -121,6 +137,11 @@ export default {
   }
   return "";
 }
+},
+mounted(){
+            axios.post('http://localhost:3000/users/GetUserInfo',{
+            username:this.getCookie('user')
+          }).then(this.getUserInfo,(err)=>console.log(err))      
 }
 }
 </script>

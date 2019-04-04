@@ -113,6 +113,54 @@ router.post('/UpdateUserInfo',async function (ctx,next) {
             })
     }
 })
+router.post('/GetUserInfo',async function (ctx,next) {
+    const {username} = ctx.request.body
+    if(username){
+        await Pet.findAll({
+            where:{
+              username:username
+            }
+          }).then((p)=>{
+            console.log("res是")
+            const newP = p.toString()
+            console.log(newP)
+            if(newP){
+              console.log("有数据")
+              for (let i of p) {
+                var res = JSON.stringify(i)
+                console.log("res是"+res)
+            }
+            return new Promise((resolve,reject)=>{
+                resolve(res)
+            })
+            }else{
+              console.log("没有数据")
+              return new Promise((resolve,reject)=>{
+                resolve("请先上传个人信息")
+            })
+          }
+          }).catch((err)=>{
+            console.log('错了',err)
+            return new Promise((resolve,reject)=>{
+                resolve("请先上传个人信息")
+            })
+            }).then((res)=>{
+              if(res === "请先上传个人信息"){
+                ctx.body={
+                  code:0,
+                  data:res
+              }
+              }else{
+                ctx.body={
+                  code:1,
+                  data:res
+              }
+              }
 
+            }).catch((err)=>{
+                console.log('failed',err)
+                })
+    }
+})
 
 module.exports = router
