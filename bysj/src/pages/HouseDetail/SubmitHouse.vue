@@ -36,6 +36,7 @@ export default {
   data () {
     return {
         labelPosition: 'left',
+        id:'',
         formLabelAlign: {
         imgUrl: '',
         houseLarge: '',
@@ -107,6 +108,16 @@ export default {
       this.$message(res.data.msg)
       console.log(res)
   },
+  getSuccessInfo(res){
+    const data = JSON.parse(res.data.data)
+    console.log(data)
+    this.formLabelAlign.imgUrl =  data.imgUrl,
+    this.formLabelAlign.houseLarge =  data.houseLarge,
+    this.formLabelAlign.phone =  data.phone,
+    this.formLabelAlign.address = data.address,
+    this.formLabelAlign.price = data.price
+
+  },
   getCookie (c_name) {    
   if (document.cookie.length>0)
   {
@@ -121,6 +132,14 @@ export default {
   }
   return "";
 }
+},
+mounted(){
+ this.id =  this.$route.query.id  
+ if(this.id){
+    axios.post('http://localhost:3000/house/GetIdHouse',{
+            id:this.id
+          }).then(this.getSuccessInfo,(err)=>console.log(err))
+ }
 }
 }
 </script>

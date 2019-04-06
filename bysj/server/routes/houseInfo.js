@@ -102,7 +102,7 @@ router.post('/updateHouseInfo',async function (ctx,next) {
  
 })
 router.post('/GetHouseInfo',async function (ctx,next) {
-    const {username} = ctx.request.body
+    const {username,id} = ctx.request.body
     if(username){
         await Pet.findAll({
             where:{
@@ -151,4 +151,40 @@ router.post('/GetHouseInfo',async function (ctx,next) {
     }
 })
 
+router.post('/GetIdHouse',async (ctx,next) => {
+const {id} = ctx.request.body
+if(id){
+  console.log("!11")
+  await Pet.findAll({
+    where:{
+      id
+    }
+  }).then((p)=>{
+      for (let i of p) {
+        var res = JSON.stringify(i)
+        console.log(res)
+    }
+    return new Promise((resolve,reject)=>{
+        resolve(res)
+    })
+  }).catch((err)=>{
+    console.log('failed',err)
+    }).then((res)=>{
+      if(res){
+        ctx.body={
+          code:1,
+          data:res
+      }
+      }else{
+        ctx.body={
+          code:0,
+          data:"未找到信息"
+      }
+      }
+
+    }).catch((err)=>{
+        console.log('failed',err)
+        })
+}
+})
 module.exports = router

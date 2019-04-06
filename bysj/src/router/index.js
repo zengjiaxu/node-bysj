@@ -50,7 +50,8 @@ export default new Router({
       {
         path:'/submitHouse',
         name:'submitHouse',
-        component:SubmitHouse
+        component:SubmitHouse,
+        props: true
       },
       {
         path:'/manageHouse',
