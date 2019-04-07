@@ -59,12 +59,17 @@ export default {
           return "";
         },
         getSuccessInfo (res) {
+          if(res.data.code === 1){
           let data = res.data.data
           let newRes = []
           data.forEach((item)=>{
             newRes.push(JSON.parse(item))
           })
           this.detailInfo = newRes
+          }else{
+            alert(res.data.data)
+          }
+
         },
         deleteSuccessInfo(res){
           if(res.data.code === 1){
