@@ -10,8 +10,8 @@
                     <img src="../../assets/fw1.jpg" alt="">
                 </div>
                 <div class="info">
-                    <p class="size">{{item.size}}
-                      <el-button @click="deleteHouse" type="success">删除</el-button>
+                    <p class="size">{{item.houseLarge}}
+                      <el-button @click="deleteHouse(item.id)" type="success">删除</el-button>
                       <el-button @click="updateHouse(item.id)" type="primary">修改</el-button>
                     </p>
                     <p class="address">地理位置：{{item.address}}</p>
@@ -28,28 +28,59 @@
 </template>
 
 <script type="text/ecmascript-6">
+import axios from 'axios'
 export default {
   data(){
     return {
-      detailInfo:[
-            {id:'1',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'2000',img:'../../../assets/fw1.jpg'},
-            {id:'2',size:'一室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1000',img:'../../../assets/fw1.jpg'},
-            {id:'3',size:'三室二厅',address:'浙江省衢州市',phone:'15898913974',price:'3000',img:'../../../assets/fw1.jpg'},
-            {id:'4',size:'二室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1500',img:'../../../assets/fw1.jpg'},
-            {id:'5',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'2000',img:'../../../assets/fw1.jpg'},
-            {id:'6',size:'一室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1000',img:'../../../assets/fw1.jpg'},
-            {id:'7',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1500',img:'../../../assets/fw1.jpg'},
-            {id:'8',size:'三室二厅',address:'浙江省衢州市',phone:'15898913974',price:'3000',img:'../../../assets/fw1.jpg'},
-            {id:'9',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'2000',img:'../../../assets/fw1.jpg'}]
+      detailInfo:[]
     }
   },
   methods:{
-    deleteHouse () {
-
+    deleteHouse (x) {
+        axios.post('http://localhost:3000/house/deleteUserHouse',{
+            id:x
+          }).then(this.deleteSuccessInfo,(err)=>console.log(err))
     },
     updateHouse (x) {
       this.$router.push({name:'submitHouse',query:{id:x}})
-    }
+    },
+    getCookie (c_name) {    
+          if (document.cookie.length>0)
+          {
+          let c_start=document.cookie.indexOf(c_name + "=")
+          if (c_start!=-1)
+          { 
+          c_start=c_start + c_name.length+1 
+          let c_end=document.cookie.indexOf(";",c_start)
+          if (c_end==-1) c_end=document.cookie.length
+          return unescape(document.cookie.substring(c_start,c_end))
+          }
+          }
+          return "";
+        },
+        getSuccessInfo (res) {
+          let data = res.data.data
+          let newRes = []
+          data.forEach((item)=>{
+            newRes.push(JSON.parse(item))
+          })
+          this.detailInfo = newRes
+        },
+        deleteSuccessInfo(res){
+          if(res.data.code === 1){
+            this.$message(res.data.data)
+            axios.post('http://localhost:3000/house/GetUserHouse',{
+            username:this.getCookie('user')
+          }).then(this.getSuccessInfo,(err)=>console.log(err))
+          }else{
+            this.$message('删除失败')
+          }
+        }
+  },
+  mounted () {
+        axios.post('http://localhost:3000/house/GetUserHouse',{
+            username:this.getCookie('user')
+          }).then(this.getSuccessInfo,(err)=>console.log(err))
   }
 }
 </script>

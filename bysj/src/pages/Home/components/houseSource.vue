@@ -6,8 +6,10 @@
                 <ul>
                     <li v-for="item of houseSource" :key="item.id" @click="toDetail(item.id)">
                         <img src="../../../assets/fw1.jpg" alt="">
-                        <p class="size">{{item.size}}</p>
-                        <p class="address">地理位置：{{item.address}}</p>
+                        <p class="size">{{item.houseLarge}}</p>
+                        <p class="address">地理位置：
+                          {{item.address}}
+                        </p>
                         <p class="phone">联系电话：{{item.phone}}</p>
                         <p class="bPrice"><span class="price">￥{{item.price}}</span>/月</p>
                     </li>
@@ -18,27 +20,32 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
         msg:[1],
-        houseSource:[
-            {id:'1',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'2000',img:'../../../assets/fw1.jpg'},
-            {id:'2',size:'一室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1000',img:'../../../assets/fw1.jpg'},
-            {id:'3',size:'三室二厅',address:'浙江省衢州市',phone:'15898913974',price:'3000',img:'../../../assets/fw1.jpg'},
-            {id:'4',size:'二室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1500',img:'../../../assets/fw1.jpg'},
-            {id:'5',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'2000',img:'../../../assets/fw1.jpg'},
-            {id:'6',size:'一室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1000',img:'../../../assets/fw1.jpg'},
-            {id:'7',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'1500',img:'../../../assets/fw1.jpg'},
-            {id:'8',size:'三室二厅',address:'浙江省衢州市',phone:'15898913974',price:'3000',img:'../../../assets/fw1.jpg'},
-            {id:'9',size:'三室一厅',address:'浙江省衢州市',phone:'15898913974',price:'2000',img:'../../../assets/fw1.jpg'}]
+        houseSource:[]
     }
   },
   methods:{
       toDetail (x) {
           this.$router.push({name:'houseDetail',query:{id:x}})
+      },
+      getAllHouseInfo (res) {
+        let data = res.data.data
+        let newRes = []
+        data.forEach((item)=>{
+            newRes.push(JSON.parse(item))
+          })
+        this.houseSource = newRes
       }
-  }
+  },
+  mounted () {
+            axios.post('http://localhost:3000/house/GetAllHouse',{
+            msg:1
+          }).then(this.getAllHouseInfo,(err)=>console.log(err))
+}
 }
 </script>
 <style lang="stylus" scoped>
@@ -64,10 +71,10 @@ export default {
           list-style none
           width 20.8vw
           height 18vw
-          margin 0
           padding 0
           float left
           margin 10px 0 0 11px
+          margin-bottom 20px
           position relative
           cursor pointer
           img 
@@ -81,7 +88,7 @@ export default {
             text-align right 
             display inline-block
             position absolute
-            bottom  18px
+            bottom  -7px
             right 0
             font-size 14px
             color #999

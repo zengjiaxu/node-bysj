@@ -1,7 +1,7 @@
 <template>
  <div>
      <div class="formInfo">
-         <p>个人信息</p>
+         <p>发布房源信息</p>
         <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
         <el-form-item label="图片地址" prop="imgUrl">
             <el-input v-model="formLabelAlign.imgUrl"></el-input>
@@ -78,7 +78,7 @@ export default {
             address:this.formLabelAlign.address,
             price:this.formLabelAlign.price,
             username:this.getCookie('user')
-          }).then(this.getSuccessInfo,(err)=>console.log(err))
+          }).then(this.InsertSuccessInfo,(err)=>console.log(err))
         }else{//表单验证不通过
            this.$message('请根据提示输入正确的数据')
         }
@@ -87,6 +87,9 @@ export default {
   getSuccessInfo (res) {
       this.$message(res.data.msg)
       console.log(res)
+  },
+  InsertSuccessInfo (res) {
+    this.$message(res.data.msg)
   },
   updateHouseInfo () {
       this.$refs.ruleForm.validate((val)=>{
@@ -106,7 +109,6 @@ export default {
   },
   updateSuccessInfo(res){
       this.$message(res.data.msg)
-      console.log(res)
   },
   getSuccessInfo(res){
     const data = JSON.parse(res.data.data)
