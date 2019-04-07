@@ -71,7 +71,6 @@ export default {
   methods: {
      getInfo (res) {
        if(this.getCookie('session_id')){
-         console.log(res)
          this.haveSession = true
          this.name = this.getCookie('user')
          this.$emit('getN',this.name)
