@@ -12,6 +12,7 @@ const users = require('./routes/users')
 const userInfo = require('./routes/userInfo')
 const houseInfo = require('./routes/commenInfo')
 const commenInfo = require('./routes/houseInfo')
+const replyInfo = require('./routes/replyInfo')
 const Sequelize = require('sequelize');
 const config = require('./config/config.js');
 
@@ -59,6 +60,7 @@ app.use(users.routes(), users.allowedMethods())
 app.use(userInfo.routes(), userInfo.allowedMethods())
 app.use(houseInfo.routes(), userInfo.allowedMethods())
 app.use(commenInfo.routes(), commenInfo.allowedMethods())
+app.use(replyInfo.routes(), replyInfo.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

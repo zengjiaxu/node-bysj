@@ -59,7 +59,10 @@ methods: {
   },
   getInfo (res) {
     if(res.data.code === 1){
-      this.$message(res.data.msg)
+      this.$message({
+              type:'success',
+              message:res.data.msg
+              })
     }else{
       this.$message('注册失败')
       console.log(res)

@@ -85,11 +85,17 @@ export default {
       })
   },
   getSuccessInfo (res) {
-      this.$message(res.data.msg)
+      this.$message({
+              type:'success',
+              message:res.data.msg
+              })
       console.log(res)
   },
   InsertSuccessInfo (res) {
-    this.$message(res.data.msg)
+    this.$message({
+              type:'success',
+              message:res.data.msg
+              })
   },
   updateHouseInfo () {
       this.$refs.ruleForm.validate((val)=>{
@@ -108,7 +114,10 @@ export default {
       })
   },
   updateSuccessInfo(res){
-      this.$message(res.data.msg)
+      this.$message({
+              type:'success',
+              message:res.data.msg
+              })
   },
   getSuccessInfo(res){
     const data = JSON.parse(res.data.data)

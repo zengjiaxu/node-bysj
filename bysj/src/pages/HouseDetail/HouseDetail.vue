@@ -1,5 +1,5 @@
 <template>
- <div>
+ <div class="HouseDetail">
      <my-header></my-header>
     <el-row type="flex" justify="center">
       <el-col :span="16">
@@ -33,10 +33,23 @@
               <ul>
                   <li v-for="item of commen" :key="item.id">
                       {{item.message}}
-                      <el-button type="info">回复</el-button>
-                      </li>
+                      <p v-for="item of replyArr" :key="item.id">{{item.message}}<span class="whoSub"><span class="whoRep">回复人：</span>{{item.username}}</span></p>
+                      <el-button type="info" @click="handleReplyInfo(item.id)">回复</el-button>
+                      <span class="userDetail">发布人：{{item.username}}</span>
+                      <span class="timeDetail">{{item.time}}</span>
+                  </li>
               </ul>
           </div>
+          <el-dialog title="请输入回复内容" :visible.sync="replyInfo">
+            <el-input
+                type="textarea"
+                :rows="4"
+                placeholder="内容"
+                v-model="textareaReply"
+                resize="none">
+            </el-input>
+            <el-button type="primary" class="replyBtn" @click="submitReply">提交</el-button>
+          </el-dialog>
       </el-col>
     </el-row>
  </div>
@@ -56,7 +69,12 @@ export default {
         jd:'',
         wd:'',
         textarea:'',
-        commen:[]
+        commen:[],
+        replyInfo:false,
+        textareaReply:'',
+        sourceUser:'',
+        self_id:'',
+        replyArr:[]
     }
   },
   components:{
@@ -69,14 +87,14 @@ export default {
         this.houseLarge = data.houseLarge
         this.phone = data.phone
         this.price = data.price
-
+        this.sourceUser = data.username
         // 百度地图API功能
         var map = new BMap.Map("allmap");    // 创建Map实例
         var localSearch = new BMap.LocalSearch(map); //查找位置
         var _this = this
         map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  // 初始化地图,设置中心点坐标和地图级别
         //添加地图类型控件
-    map.addControl(new BMap.NavigationControl());	  
+        map.addControl(new BMap.NavigationControl());	  
         map.setCurrentCity("北京");          // 设置地图显示的城市 
         map.enableScrollWheelZoom(true)
 
@@ -102,27 +120,59 @@ export default {
             axios.post('http://localhost:3000/commen/InsertCommenInfo',{
             username:this.getCookie('user'),
             message:this.textarea,
-            id:this.id
+            id:this.id,
+            time:this.getTime()
             }).then(this.insertSuccessInfo,(err)=>console.log(err))
-
-            axios.post('http://localhost:3000/commen/GetIdCommen',{
-           id:this.id
-            }).then(this.getAllCommen,(err)=>{console.log(err)})
           }else{
               this.$message('请输入内容')
           }
 
       },
+      handleReplyInfo (selfId) {
+          this.replyInfo = true
+          this.self_id = selfId
+      },
+      submitReply () {
+
+            axios.post('http://localhost:3000/reply/InsertReplyInfo',{
+            username:this.getCookie('user'),
+            message:this.textareaReply,
+            to_who:this.sourceUser,
+            self_id:this.self_id
+            }).then(this.insertReplyInfo,(err)=>console.log(err))
+      },
+      insertReplyInfo (res) {
+          this.replyInfo = false
+          const data = res.data.msg
+          this.$message({
+              type:'success',
+              message:data
+          })
+      },
       insertSuccessInfo (res) {
-          this.$message(res.data.msg)
+        axios.post('http://localhost:3000/commen/GetIdCommen',{
+           id:this.id
+         }).then(this.getAllCommen,(err)=>{console.log(err)})
+          this.$message({
+              type:'success',
+              message:res.data.msg
+              })
       },
       getAllCommen(res){
         let data = res.data.data
         let newRes = []
         data.forEach((item)=>{
-            newRes.push(JSON.parse(item))
+            newRes.unshift(JSON.parse(item))
           })
         this.commen = newRes
+      },
+      getAllReply (res) {
+        let data = res.data.data
+        let newRepArr = []
+        data.forEach((item)=>{
+            newRepArr.unshift(JSON.parse(item))
+          })
+        this.replyArr = newRepArr
       },
       getCookie (c_name) {    
           if (document.cookie.length>0)
@@ -137,6 +187,17 @@ export default {
           }
           }
           return "";
+        },
+        getTime () {
+            let date = new Date()
+            let year = date.getFullYear()
+            let mon = date.getMonth() + 1
+            let day = date.getDate()
+            let hour = date.getHours() //小时 
+            let minu = date.getMinutes() //分 
+            let sec = date.getSeconds() //秒
+            let time = `${year}/${mon}/${day} ${hour}:${minu}:${sec}`
+            return time
         }
   },
   created(){
@@ -153,6 +214,15 @@ export default {
            id:this.id
          }).then(this.getAllCommen,(err)=>{console.log(err)})
 
+        axios.post('http://localhost:3000/reply/GetAllReply',{
+           id:this.id
+         }).then(this.getAllReply,(err)=>{console.log(err)})
+  },
+  computed:{
+      ifEqual () {
+          console.log(this.key)
+        return false
+      }
   }
 }
 
@@ -170,6 +240,8 @@ export default {
     right 5px
     bottom 5px
     line-height 1px
+.HouseDetail >>> .el-dialog__body
+    height 137px
 .top
     width 100%
     line-height 50px
@@ -235,7 +307,7 @@ export default {
     position relative
 .commenContainer ul li
     width 100%
-    height 60px
+    min-height 60px
     margin-top 5px
     border-radius 5px
     border 1px solid #ddd
@@ -245,4 +317,39 @@ export default {
     font-size 15px
     color #000
     position relative
+    .userDetail
+        position absolute
+        right 125px
+        bottom 30px
+        color #cccccc
+        font-size  10px
+    .timeDetail
+        position absolute
+        right 125px
+        bottom 5px
+        color #cccccc
+        font-size  10px
+    p
+        margin-left 20px
+        font-size 13px
+        color #000
+        min-height 10px
+        margin-top 8px
+        padding-left 8px
+        border-left 3px solid #ccc
+        width:75%
+        position relative
+        .whoSub
+            font-size 13px
+            color #cccccc
+            margin-left 50px
+            position absolute
+            right 5px
+            bottom 5px
+            .whoRep
+                color #000
+                font-size 13px
+.replyBtn
+    float right
+    margin-top 15px
 </style>

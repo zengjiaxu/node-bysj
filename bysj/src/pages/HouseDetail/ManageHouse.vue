@@ -73,7 +73,10 @@ export default {
         },
         deleteSuccessInfo(res){
           if(res.data.code === 1){
-            this.$message(res.data.data)
+            this.$message({
+              type:'success',
+              message:res.data.data
+              })
             axios.post('http://localhost:3000/house/GetUserHouse',{
             username:this.getCookie('user')
           }).then(this.getSuccessInfo,(err)=>console.log(err))

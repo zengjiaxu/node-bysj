@@ -2,7 +2,7 @@
 const router = require('koa-router')()
 const Sequelize = require('sequelize');
 const config = require('../config/config.js');
-
+const PetRep = require('../sqlModel/replyInfoModel')
 
 //创建连接池
 let sequelize = new Sequelize(config.database, config.username, config.password, {
@@ -23,7 +23,8 @@ let Pet = sequelize.define('commenInfo', {
   },
   message: Sequelize.STRING(100),
   username: Sequelize.STRING(100),
-  commen_id:Sequelize.STRING(100)
+  commen_id:Sequelize.STRING(100),
+  time:Sequelize.STRING(100),
 }, {
       timestamps: false
   });
@@ -33,10 +34,10 @@ let Pet = sequelize.define('commenInfo', {
 //上传信息
 router.post('/InsertCommenInfo',async function (ctx,next) {
     //数据库插入操作
-  const {username,message,id:commen_id} = ctx.request.body
+  const {username,message,id:commen_id,time} = ctx.request.body
   console.log(username,message)
   if(username){
-     await Pet.create({commen_id,username,message}).then(function (p) {
+     await Pet.create({commen_id,username,message,time}).then(function (p) {
         console.log('created.' + JSON.stringify(p))
       }).catch(function (err) {
         console.log('failed: ' + err);

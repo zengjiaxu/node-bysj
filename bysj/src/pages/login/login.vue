@@ -59,10 +59,16 @@ methods:{
       this.user = res.data.sess
       this.setCookie('user',this.user,3)
        this.$store.commit('changeUser',this.user)
-      this.$message(res.data.msg)
+      this.$message({
+              type:'success',
+              message:res.data.msg
+              })
       this.$router.push('/')
     }else{
-      this.$message(res.data.msg)
+      this.$message({
+              type:'success',
+              message:res.data.msg
+              })
     }
   },
    setCookie (name, value, day) {

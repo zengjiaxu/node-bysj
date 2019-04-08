@@ -100,7 +100,10 @@ export default {
       })
   },
   updateInfo (res) {
-      this.$message(res.data.msg)
+      this.$message({
+              type:'success',
+              message:res.data.msg
+              })
       console.log(res)
   },
   getUserInfo (res) {
@@ -120,7 +123,10 @@ export default {
     }
   },
   getInfo (res) {
-      this.$message(res.data.msg)
+      this.$message({
+              type:'success',
+              message:res.data.msg
+              })
       console.log(res)
   },
   getCookie (c_name) {    
