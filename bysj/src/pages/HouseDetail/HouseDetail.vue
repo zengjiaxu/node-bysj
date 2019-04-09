@@ -14,6 +14,7 @@
                     <p class="address">地理位置：{{address}}</p>
                     <p class="phone">联系电话：{{phone}}</p>
                     <p class="bPrice"><span class="price">￥{{price}}</span>/月</p>
+                    <el-button type="warning" round @click="appointment">预约</el-button>
                 </div>
               </div>
               <div id="allmap"></div>
@@ -33,7 +34,15 @@
               <ul>
                   <li v-for="item of commen" :key="item.id">
                       {{item.message}}
-                      <p v-for="item of replyArr" :key="item.id">{{item.message}}<span class="whoSub"><span class="whoRep">回复人：</span>{{item.username}}</span></p>
+                      <div class="replyDetailInfo" v-for="p_list of replyArr" :key="p_list.id" v-if="ifEqul(item.id,p_list.self_id)">
+                            {{p_list.message}}
+                            
+                            <span class="whoSub" >
+                                <span class="whoRep">回复人：</span>
+                                {{p_list.username}}
+                            </span>
+                            <span class="fz" v-if="p_list.username === sourceUser">({{fz}})</span>
+                      </div>
                       <el-button type="info" @click="handleReplyInfo(item.id)">回复</el-button>
                       <span class="userDetail">发布人：{{item.username}}</span>
                       <span class="timeDetail">{{item.time}}</span>
@@ -74,7 +83,8 @@ export default {
         textareaReply:'',
         sourceUser:'',
         self_id:'',
-        replyArr:[]
+        replyArr:[],
+        fz:'房主'
     }
   },
   components:{
@@ -129,8 +139,14 @@ export default {
 
       },
       handleReplyInfo (selfId) {
-          this.replyInfo = true
-          this.self_id = selfId
+          if(this.getCookie('user')){
+            this.replyInfo = true
+            this.self_id = selfId
+            this.textareaReply = ''
+          }else{
+              this.$message('请先登录')
+          }
+
       },
       submitReply () {
 
@@ -144,6 +160,9 @@ export default {
       insertReplyInfo (res) {
           this.replyInfo = false
           const data = res.data.msg
+        axios.post('http://localhost:3000/reply/GetAllReply',{
+           id:this.id
+         }).then(this.getAllReply,(err)=>{console.log(err)})
           this.$message({
               type:'success',
               message:data
@@ -153,6 +172,7 @@ export default {
         axios.post('http://localhost:3000/commen/GetIdCommen',{
            id:this.id
          }).then(this.getAllCommen,(err)=>{console.log(err)})
+         this.textarea=''
           this.$message({
               type:'success',
               message:res.data.msg
@@ -173,6 +193,12 @@ export default {
             newRepArr.unshift(JSON.parse(item))
           })
         this.replyArr = newRepArr
+      },
+      appointment(){
+        // axios.post('http://localhost:3000/appoint/InsertAppointmentInfo',{
+            
+        // }).then(this.insetAppointInfo,(err)=>console.log(err))
+          
       },
       getCookie (c_name) {    
           if (document.cookie.length>0)
@@ -219,10 +245,13 @@ export default {
          }).then(this.getAllReply,(err)=>{console.log(err)})
   },
   computed:{
-      ifEqual () {
-          console.log(this.key)
-        return false
-      }
+     ifEqul(){
+         return function (a,b) {
+         if(a === b){
+             return true
+         }
+         }
+     }
   }
 }
 
@@ -298,6 +327,10 @@ export default {
             .price
                 color orange
                 font-size 30px
+            .el-button
+                position absolute
+                top 0
+                right 0
     #allmap
         width 55%
         height 100%
@@ -329,7 +362,7 @@ export default {
         bottom 5px
         color #cccccc
         font-size  10px
-    p
+    .replyDetailInfo
         margin-left 20px
         font-size 13px
         color #000
@@ -344,11 +377,16 @@ export default {
             color #cccccc
             margin-left 50px
             position absolute
-            right 5px
+            right 25px
             bottom 5px
             .whoRep
                 color #000
                 font-size 13px
+        .fz
+            color orange
+            position absolute
+            right -14px
+            bottom 5px
 .replyBtn
     float right
     margin-top 15px

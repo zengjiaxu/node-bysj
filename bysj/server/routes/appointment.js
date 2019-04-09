@@ -1,16 +1,15 @@
 const router = require('koa-router')()
-const Pet = require('../sqlModel/replyInfoModel')
+const Pet = require('../sqlModel/appointmentModel')
 
-  router.prefix('/reply')
+  router.prefix('/appointment')
   
-  router.post('/InsertReplyInfo',async (ctx,next)=>{
-    const{message,username,to_who,self_id} = ctx.request.body
-    console.log(message,username,to_who)
+  router.post('/InsertAppointmentInfo',async (ctx,next)=>{
+    const{appointment_user,receive_user,appoint_ms,return_m} = ctx.request.body
     if(username){
-      await Pet.create({message,username,to_who,self_id}).then(function (p) {
+      await Pet.create({appointment_user,receive_user,appoint_ms,return_m}).then(function (p) {
         console.log('created.' + JSON.stringify(p))
       return new Promise((resolve,reject)=>{
-          resolve('回复成功')
+          resolve('申请预约成功，请等待房主反馈')
         })
       }).catch((err)=>{
       console.log('failed',err)
