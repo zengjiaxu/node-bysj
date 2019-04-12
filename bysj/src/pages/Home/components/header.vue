@@ -42,12 +42,21 @@
                 <el-menu-item index="4-1">如何举报</el-menu-item>
                 <el-menu-item index="4-2">查看举报进度</el-menu-item>
             </el-submenu>
+            <el-submenu index="5" v-if="ifadmin">
+                <template slot="title">管理员权限</template>
+                <el-menu-item index="5-1">审核用户个人及房源信息</el-menu-item>
+                <el-menu-item index="5-2">受理用户举报信息</el-menu-item>
+            </el-submenu>
             </el-menu>
             <div class="lgr" v-show="!haveSession">
                 <router-link to="/login">登录</router-link>/
                 <router-link to="/register">注册</router-link>
             </div>
             <div class="lgr" v-show="haveSession">
+              <router-link to="/unreadInfo">
+                <i class="el-icon-message" ></i>
+              </router-link>
+              <span class="unreadMsg" v-if="false" >{{unreadMsg2}}</span>
               Hello，{{name}}
               <span class="exit" @click="handleExit">[退出]</span>
             </div>
@@ -65,7 +74,11 @@ export default {
     return {
       name: 'a',
       haveSession:false,
-      activeIndex:'1'
+      activeIndex:'1',
+      unreadMsg1:0,
+      unreadMsg2:0,
+      isActive:true,
+      ifadmin:false
     }
   },
   methods: {
@@ -90,6 +103,12 @@ export default {
         if(key === '3-3'){
          this.$router.push('/manageHouse')
        }
+        if(key === '5-1'){
+         this.$router.push('/manageUserHouse')
+       }
+        if(key === '5-2'){
+         this.$router.push('/manageUserReport')
+       }
      },
      handleExit () {
        axios.defaults.withCredentials = true//允许跨域访问
@@ -104,6 +123,7 @@ export default {
               })
        this.setCookie('session_id','',-1)
        this.setCookie('user','',-1)
+       this.ifadmin = false
        if(this.getCookie('session_id')){
          this.haveSession = true
          this.name = res.data.sess
@@ -111,6 +131,25 @@ export default {
        }else{
          this.haveSession = false
          this.$emit('hasSess',this.haveSession)
+       }
+     },
+     getAppointmentInfo (res) {
+       const data = res.data
+       if(data.code === 0){
+         this.$message(data.data)
+       }else{
+      axios.post('http://localhost:3000/appointment/GetAppointmentReply',{
+         username:this.getCookie('user'),
+       }).then(this.getAppointmentReply,(err)=>console.log(err))
+         this.unreadMsg1 =  data.data.length
+       }
+     },
+     getAppointmentReply (res) {
+       const data = res.data
+       if(data.code === 0){
+         this.$message(data.data)
+       }else{
+         this.unreadMsg2 =  data.data.length + this.unreadMsg1
        }
      },
      getCookie (c_name) {    
@@ -139,6 +178,15 @@ export default {
   },
   mounted () {
     this.getInfo()
+       axios.defaults.withCredentials = true//允许跨域访问
+       axios.post('http://localhost:3000/appointment/GetAppointmentInfo',{
+           username:this.getCookie('user'),
+         }).then(this.getAppointmentInfo,(err)=>console.log(err))
+    if(this.getCookie('user') === 'admin'){
+      this.ifadmin = true
+    }else{
+      this.ifadmin = false
+    }
   }
 }
 
@@ -181,6 +229,20 @@ export default {
         .exit:hover
             text-decoration underline
             color #ffffff
+        i
+          font-size 17px
+        .unreadMsg
+          color #ffffff
+          position absolute
+          left -12px
+          top 11px
+          background rgba(255,0,0,0.8)
+          line-height 18px
+          width  18px
+          text-align center
+          border-radius 50%
+          display inline-block
+          font-size 1px
   .grid-content 
     min-height: 60px;
 </style>

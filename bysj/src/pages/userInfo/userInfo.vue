@@ -25,6 +25,13 @@
           <el-button @click="submitUserInfo" type="success">上传</el-button>
           <el-button @click="updateUserInfo" type="primary">保存</el-button>
         </div>
+        <br>
+        <br>
+        <el-steps :active="active" finish-status="success">
+          <el-step title="发布" :status="status1"></el-step>
+          <el-step title="待审核"></el-step>
+          <el-step :title="titles" :status="status"></el-step>
+        </el-steps>
      </div>
  </div>
 </template>
@@ -36,12 +43,16 @@ export default {
   data () {
     return {
         labelPosition: 'left',
+        active:3,
+        status:'',
+        titles:'',
+        status1:'',
         formLabelAlign: {
         name: '',
         age: '',
         identity: '',
         address:'',
-        email:''
+        email:'',
         },
         rules: {
         name: [
@@ -109,17 +120,38 @@ export default {
   getUserInfo (res) {
     if(res.data.code === 0){
       console.log(res)
-      alert(res.data.data)
+      this.active = 1
+      this.status = 'wait'
+      this.titles = '未完成'
+      this.status1 = 'error'
     }
     if(res.data.code === 1){
       const userData = JSON.parse(res.data.data)
-      const {address,age,email,identity,user,username} = userData
+      const {address,age,email,identity,user,username,reviewed_user} = userData
       this.formLabelAlign.name = user
       this.formLabelAlign.age = ~~age
       this.formLabelAlign.address = address
       this.formLabelAlign.email = email
       this.formLabelAlign.identity = identity
       this.formLabelAlign.username = username
+      if(reviewed_user === '1'){
+        this.active = 1
+        this.status = 'wait'
+        this.titles= '未完成'
+        this.status1 = 'success'
+      }
+      else if(reviewed_user === '2'){
+        this.active = 3
+        this.status = 'success'
+        this.titles= '通过'
+        this.status1 = 'success'
+      }
+      else{
+        this.active = 3
+        this.status = 'error'
+        this.titles = '未通过'
+        this.status1 = 'success'
+      }
     }
   },
   getInfo (res) {
@@ -154,7 +186,7 @@ mounted(){
 <style scoped lang="stylus">
 .formInfo
     width 400px
-    height 500px
+    height 520px
     border 1px solid #cccccc
     padding 15px
     border-radius 5px
@@ -162,6 +194,9 @@ mounted(){
     left 50%
     top 50%
     transform: translate(-50%,-50%);
+    .el-steps--horizontal
+        width: 300px
+        margin-left: 50px
     .el-form
       margin-top 30px
     p

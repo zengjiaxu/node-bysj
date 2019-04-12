@@ -59,6 +59,20 @@
             </el-input>
             <el-button type="primary" class="replyBtn" @click="submitReply">提交</el-button>
           </el-dialog>
+
+           <el-dialog title="请输入以下信息" :visible.sync="dateInfo">
+            <el-date-picker
+                v-model="datevalue"
+                type="datetime"
+                placeholder="选择预约时间">
+            </el-date-picker>
+            <el-form :label-position="labelPosition" label-width="0px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
+                <el-form-item label="" prop="yourPhone">
+                    <el-input v-model="formLabelAlign.yourPhone" placeholder="输入联系电话"></el-input>
+                </el-form-item>
+            </el-form>
+            <el-button type="primary" class="replyBtn" @click="submitAppoint">马上预约</el-button>
+          </el-dialog>
       </el-col>
     </el-row>
  </div>
@@ -80,11 +94,26 @@ export default {
         textarea:'',
         commen:[],
         replyInfo:false,
+        dateInfo:false,
+        datevalue:'',
         textareaReply:'',
         sourceUser:'',
         self_id:'',
         replyArr:[],
-        fz:'房主'
+        fz:'房主',
+        labelPosition:'left',
+        formLabelAlign:{
+            yourPhone:''
+        },
+        rules:{
+        yourPhone:[
+            { required: true,type: 'string', message: '请输入手机号', trigger: 'blur' },
+            {
+            pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/,
+            message: '手机格式有误',trigger:'blur'
+            }
+        ]
+        }
     }
   },
   components:{
@@ -149,13 +178,16 @@ export default {
 
       },
       submitReply () {
-
+          if(this.textareaReply){
             axios.post('http://localhost:3000/reply/InsertReplyInfo',{
             username:this.getCookie('user'),
             message:this.textareaReply,
             to_who:this.sourceUser,
             self_id:this.self_id
             }).then(this.insertReplyInfo,(err)=>console.log(err))
+          }else{
+              this.$message('请输入内容')
+          }
       },
       insertReplyInfo (res) {
           this.replyInfo = false
@@ -195,10 +227,47 @@ export default {
         this.replyArr = newRepArr
       },
       appointment(){
-        // axios.post('http://localhost:3000/appoint/InsertAppointmentInfo',{
-            
-        // }).then(this.insetAppointInfo,(err)=>console.log(err))
+        if(this.getCookie('user')){
+            if(this.getCookie('user') === this.sourceUser){
+                this.$message('您不能预约自己')
+            }else{
+                this.dateInfo = true
+                this.yourPhone = ''
+                this.value1 = ''
+            }
+        }else{
+            this.$message('请登录')
+        }
           
+      },
+      submitAppoint(){
+        this.$refs.ruleForm.validate((val)=>{
+            if(val){
+                    axios.defaults.withCredentials = true//允许跨域访问
+                    axios.post('http://localhost:3000/appointment/InsertAppointmentInfo',{
+                         appointment_user:this.getCookie('user'),
+                        receive_user:this.sourceUser,
+                        appoint_msg_date:this.datevalue,
+                        appoint_msg_phone:this.formLabelAlign.yourPhone,
+                        which_house:this.address
+                    }).then(this.insertAppointInfo,(err)=>console.log(err))
+            }else{
+                this.$message('请根据提示输入正确的手机号')
+            }
+    })
+      },
+      insertAppointInfo(res){
+        console.log(this.datevalue) 
+          const data = res.data
+          if(data.code === 1){
+              this.$message({
+                  type:'success',
+                  message:data.msg
+              })
+              this.dateInfo = false
+          }else{
+              this.$message('预约无效')
+          }
       },
       getCookie (c_name) {    
           if (document.cookie.length>0)
@@ -270,7 +339,12 @@ export default {
     bottom 5px
     line-height 1px
 .HouseDetail >>> .el-dialog__body
-    height 137px
+    height 160px
+.HouseDetail >>> .el-date-editor
+    margin-bottom 20px
+.HouseDetail >>> .el-dialog
+    border-radius 10px
+    width 40%
 .top
     width 100%
     line-height 50px

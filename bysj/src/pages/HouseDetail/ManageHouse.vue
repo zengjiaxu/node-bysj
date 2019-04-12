@@ -11,10 +11,10 @@
                 </div>
                 <div class="info">
                     <p class="size">{{item.houseLarge}}
-                      <el-button @click="deleteHouse(item.id)" type="success">删除</el-button>
+                      <el-button @click="deleteHouse(item.id)" type="danger">删除</el-button>
                       <el-button @click="updateHouse(item.id)" type="primary">修改</el-button>
                     </p>
-                    <p class="address">地理位置：{{item.address}}</p>
+                    <p class="address">地理位置：{{item.address}}<span class="review1" v-if="item.reviewed === '1'">审核中...</span><span class="review2" v-if="item.reviewed === '2'">审核通过</span><span class="review3" v-if="item.reviewed === '3'">未通过审核</span></p>
                     <p class="phone">联系电话：{{item.phone}}</p>
                     <p class="bPrice"><span class="price">￥{{item.price}}</span>/月</p>
                 </div>
@@ -32,7 +32,8 @@ import axios from 'axios'
 export default {
   data(){
     return {
-      detailInfo:[]
+      detailInfo:[],
+      review:''
     }
   },
   methods:{
@@ -59,6 +60,7 @@ export default {
           return "";
         },
         getSuccessInfo (res) {
+          console.log(res)
           if(res.data.code === 1){
           let data = res.data.data
           let newRes = []
@@ -66,6 +68,7 @@ export default {
             newRes.push(JSON.parse(item))
           })
           this.detailInfo = newRes
+          console.log(data)
           }else{
             alert(res.data.data)
           }
@@ -93,7 +96,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style scoped lang="stylus">
 .top
     width 100%
     line-height 50px
@@ -113,7 +116,7 @@ export default {
     padding 10px
     overflow scroll
     .detail
-        width  48%
+        width 32%
         height 100%
         float left
         margin 8px
@@ -147,6 +150,16 @@ export default {
                   line-height  5px
                   float right
                   margin-right 5px
+            .address
+                  .review1,.review2,.review3
+                      float right
+                      font-size 18px
+                  .review1
+                      color #cccccc
+                  .review2
+                      color #85ce61
+                  .review3
+                      color red
     #allmap
         width 55%
         height 100%

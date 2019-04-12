@@ -26,7 +26,8 @@ let Pet = sequelize.define('userInfo', {
   identity: Sequelize.STRING(100),
   address: Sequelize.STRING(100),
   email: Sequelize.STRING(100),
-  username: Sequelize.STRING(100)
+  username: Sequelize.STRING(100),
+  reviewed_user: Sequelize.STRING(100)
 }, {
       timestamps: false
   });
@@ -184,4 +185,59 @@ router.post('/GetUserInfo',async function (ctx,next) {
     }
 })
 
+//获取未审核的用户信息
+router.post('/getUnreviewedUser',async (ctx,next)=>{
+  await Pet.findAll({
+    where:{
+      reviewed_user:'1'
+    }
+  }).then((p)=>{
+    let resArr = []
+    for (let i of p) {
+      resArr.push(JSON.stringify(i))
+      console.log("res是"+resArr)
+  }
+  return new Promise((resolve,reject)=>{
+      resolve(resArr)
+  })
+  }).catch((err)=>{
+    console.log('failed:'+err)
+  }).then((x)=>{
+    ctx.body = {
+      code:1,
+      data:x
+    }
+  })
+})
+
+//通过审核 --> '2'
+router.post('/UpdateUnreviewedUser',async function (ctx,next) {
+  const {id,reviewed_user} = ctx.request.body
+      await Pet.update({
+          reviewed_user
+        }, {
+            where: {
+              id//查询条件
+            }
+          })
+          .then(((p)=>{
+            for(let i of p){
+              console.log(JSON.stringify(i))
+            }
+            return new Promise((res,rej)=>{
+                  res("已通过审核")
+            })
+          })).catch((err) => {
+              console.log('failed: ' + err)
+              return new Promise(()=>{(res,rej)=>{
+                  res("操作失败")
+            }})
+      }).then((x)=>{
+            ctx.body = {
+              code: 1,
+              msg: x
+            }
+          })
+  
+})
 module.exports = router

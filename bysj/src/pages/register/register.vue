@@ -59,10 +59,18 @@ methods: {
   },
   getInfo (res) {
     if(res.data.code === 1){
+      if(res.data.msg === '注册成功'){
       this.$message({
-              type:'success',
-              message:res.data.msg
-              })
+                type:'success',
+                message:res.data.msg
+                })
+        this.$router.push('./login')
+      }else{
+              this.$message({
+                message:res.data.msg
+                })
+      }
+ 
     }else{
       this.$message('注册失败')
       console.log(res)

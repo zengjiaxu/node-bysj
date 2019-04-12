@@ -8,6 +8,9 @@ import UserInfo from '../pages/userInfo/userInfo.vue'
 import HouseDetail from '../pages/HouseDetail/HouseDetail.vue'
 import SubmitHouse from '../pages/HouseDetail/SubmitHouse.vue'
 import ManageHouse from '../pages/HouseDetail/ManageHouse.vue'
+import UnreadInfo from '../pages/unreadInfo/unreadInfo.vue'
+import ManageUserHouse from '../pages/admin/manageUserHouse.vue'
+import ManageUserReport from '../pages/admin/manageUserReport.vue'
 Vue.use(Router)
 export default new Router({
     routes: [
@@ -57,6 +60,21 @@ export default new Router({
         path:'/manageHouse',
         name:'manageHouse',
         component:ManageHouse
+      },
+      {
+        path:'/unreadInfo',
+        name:'unreadInfo',
+        component:UnreadInfo
+      },
+      {
+        path:'/manageUserHouse',
+        name:'manageUserHouse',
+        component:ManageUserHouse
+      },
+      {
+        path:'/manageUserReport',
+        name:'manageUserReport',
+        component:ManageUserReport
       }
     ]
   })

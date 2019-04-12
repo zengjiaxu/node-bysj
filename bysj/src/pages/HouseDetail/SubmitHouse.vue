@@ -22,8 +22,8 @@
 
         </el-form>
         <div class="btnCtn">
-          <el-button @click="submitHouseInfo" type="success">上传</el-button>
-          <el-button @click="updateHouseInfo" type="primary">保存</el-button>
+          <el-button @click="submitHouseInfo" type="success" :disabled="disabled">上传</el-button>
+          <el-button @click="updateHouseInfo" type="primary" :disabled="disabled">保存</el-button>
         </div>
      </div>
  </div>
@@ -36,6 +36,7 @@ export default {
   data () {
     return {
         labelPosition: 'left',
+        disabled:false,
         id:'',
         formLabelAlign: {
         imgUrl: '',
@@ -129,6 +130,36 @@ export default {
     this.formLabelAlign.price = data.price
 
   },
+  getUserInfo (res){
+    console.log(res)
+    const data =JSON.parse(res.data.data)
+    if(data.reviewed_user === '1'){
+            this.$message(
+        {
+            message:'您的个人信息正在审核中，请稍后再试'
+        }
+        )
+      this.disabled = true
+    }
+    if(data.reviewed_user === '2'){
+      this.$message(
+        {
+            type:'success',
+            message:'您的个人信息已通过审核，请发布房源信息'
+        }
+        )
+      this.disabled = false
+    }
+    if(data.reviewed_user === '3'){
+      this.$message(
+        {
+            type:'error',
+            message:'您的个人信息未通过审核，请重新提交'
+        }
+        )
+      this.disabled = true
+    }
+  },
   getCookie (c_name) {    
   if (document.cookie.length>0)
   {
@@ -150,6 +181,16 @@ mounted(){
     axios.post('http://localhost:3000/house/GetIdHouse',{
             id:this.id
           }).then(this.getSuccessInfo,(err)=>console.log(err))
+ }
+ if(this.getCookie('user')){
+      axios.post('http://localhost:3000/users/GetUserInfo',{
+      username:this.getCookie('user')
+    }).then(this.getUserInfo,(err)=>console.log(err))   
+ }else{
+   this.disabled = true
+   this.$message({
+     message:'请登录'
+   })
  }
 }
 }

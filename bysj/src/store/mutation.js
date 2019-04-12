@@ -1,5 +1,5 @@
 export default {
-    changeUser (state, user) {
-      state.user = user
+    changeNotread (state, notread) {
+      state.notread = notread
     }
   }

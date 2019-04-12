@@ -15,19 +15,16 @@ let sequelize = new Sequelize(config.database, config.username, config.password,
 });
 
 //初始化表格模型
-let Pet = sequelize.define('appointinfo', {
+let PetRep = sequelize.define('reportInfo', {
   id: {
       type: Sequelize.INTEGER,
       primaryKey: true
   },
-  appointment_user: Sequelize.STRING(100),
-  receive_user: Sequelize.STRING(100),
-  appoint_msg_date:Sequelize.STRING(100),
-  return_msg:Sequelize.STRING(100),
-  appoint_msg_phone:Sequelize.STRING(100),
-  which_house:Sequelize.STRING(100)
+  house_id:Sequelize.STRING(100),
+  who_report: Sequelize.STRING(100),
+  textareaReport: Sequelize.STRING(100)
 }, {
       timestamps: false
   });
 
-    module.exports = Pet
+    module.exports = PetRep

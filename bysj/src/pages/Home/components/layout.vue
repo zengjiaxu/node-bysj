@@ -12,7 +12,8 @@
                 </el-col> 
             <el-col :span="4" class="center"></el-col> 
             <el-col :span="6" class="right">
-                <img src="//s0.meituan.net/bs/fe-web-meituan/2d05c2b/img/avatar.jpg" alt="">
+                <img src="http://img.mp.itc.cn/q_70,c_zoom,w_640/upload/20161229/6c94cbbac2ce4bed869b50e75aa431b6.gif" alt="" v-show="sendSess">
+                <img src="../../../assets/xly.png" alt="" v-show="!sendSess">
                 <p>Hi! 你好</p>
                 <p v-show="sendSess">{{sendN}}</p>
                 <!-- <span class="exit" @click="handleExit">[退出]</span> -->

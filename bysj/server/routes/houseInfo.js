@@ -26,7 +26,8 @@ let Pet = sequelize.define('houseInfo', {
   phone: Sequelize.STRING(100),
   address: Sequelize.STRING(100),
   price: Sequelize.STRING(100),
-  username: Sequelize.STRING(100)
+  username: Sequelize.STRING(100),
+  reviewed:Sequelize.STRING(100)
 }, {
       timestamps: false
   });
@@ -64,7 +65,7 @@ router.post('/InsertHouseInfo',async function (ctx,next) {
   }
   
     })
-//修改用户信息
+//修改房源信息
 router.post('/updateHouseInfo',async function (ctx,next) {
   const {imgUrl,houseLarge,phone,address,price,username} = ctx.request.body
   if(username){
@@ -251,8 +252,13 @@ router.post('/deleteUserHouse',async (ctx,next) => {
     console.log('failed',err)
     })
 })
+//获取全部房源信息
 router.post('/GetAllHouse',async (ctx,next)=>{
-  await Pet.findAll().then((p)=>{
+  await Pet.findAll({
+    where:{
+      reviewed:'2'
+    }
+  }).then((p)=>{
     let res = []
     for (let i of p) {
       res.push(JSON.stringify(i))
@@ -280,4 +286,72 @@ router.post('/GetAllHouse',async (ctx,next)=>{
       console.log('failed',err)
       })
 })
+
+//获取待审核的房源信息（待审核-->1   审核通过-->2  审核未通过-->3）
+router.post('/GetAllReviewedHouse',async (ctx,next)=>{
+  await Pet.findAll({
+    where:{
+      reviewed:'1'
+    }
+  }).then((p)=>{
+    let res = []
+    for (let i of p) {
+      res.push(JSON.stringify(i))
+  }
+  console.log(res)
+  return new Promise((resolve,reject)=>{
+      resolve(res)
+  })
+}).catch((err)=>{
+  console.log('failed',err)
+  }).then((res)=>{
+    if(res){
+      ctx.body={
+        code:1,
+        data:res
+    }
+    }else{
+      ctx.body={
+        code:0,
+        data:"未找到信息"
+    }
+    }
+
+  }).catch((err)=>{
+      console.log('failed',err)
+      })
+})
+
+//审核通过修改为2
+router.post('/UpdateReviewedHouse',async (ctx,next)=>{
+  const {id,reviewed} = ctx.request.body
+    if(ctx.request.body){
+      await Pet.update({reviewed}, {
+            where: {
+              id//查询条件
+            }
+          })
+          .then(((p)=>{
+            for(let i of p){
+              console.log(JSON.stringify(i))
+            }
+            return new Promise((res,rej)=>{
+                  res("已通过审核")
+            })
+          })).catch((err) => {
+              console.log('failed: ' + err)
+              return new Promise(()=>{(res,rej)=>{
+                  res("操作失败")
+            }})
+      }).then((x)=>{
+            ctx.body = {
+              code: 1,
+              msg: x
+            }
+          })
+  }
+  
+}
+)
+
 module.exports = router

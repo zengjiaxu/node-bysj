@@ -13,6 +13,7 @@ const houseInfo = require('./routes/commenInfo')
 const commenInfo = require('./routes/houseInfo')
 const replyInfo = require('./routes/replyInfo')
 const appointment = require('./routes/appointment')
+const report = require('./routes/report')
 const Sequelize = require('sequelize');
 const config = require('./config/config.js');
 
@@ -46,7 +47,7 @@ app.use(cors({
 //session
 let options = {
   key: 'session_id', /** cookie的名称，可以不管 */
-  maxAge: 7200000, /** (number) maxAge in ms (default is 1 days)，cookie的过期时间，这里表示2个小时 */
+  maxAge: 21600000, /** (number) maxAge in ms (default is 1 days)，cookie的过期时间，这里表示2个小时 */
   overwrite: true, /** (boolean) can overwrite or not (default true) */
   httpOnly: false, /** (boolean) httpOnly or not (default true) */
   signed: true, /** (boolean) signed or not (default true) */
@@ -61,6 +62,7 @@ app.use(houseInfo.routes(), userInfo.allowedMethods())
 app.use(commenInfo.routes(), commenInfo.allowedMethods())
 app.use(replyInfo.routes(), replyInfo.allowedMethods())
 app.use(appointment.routes(), appointment.allowedMethods())
+app.use(report.routes(), report.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
