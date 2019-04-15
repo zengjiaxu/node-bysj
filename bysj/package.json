@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "animate.css": "^3.7.0",
     "element-ui": "^2.6.1",
     "koa2-cors": "^2.0.6",
     "nodemailer": "^5.1.1",

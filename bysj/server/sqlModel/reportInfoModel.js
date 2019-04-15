@@ -22,7 +22,8 @@ let PetRep = sequelize.define('reportInfo', {
   },
   house_id:Sequelize.STRING(100),
   who_report: Sequelize.STRING(100),
-  textareaReport: Sequelize.STRING(100)
+  textareaReport: Sequelize.STRING(100),
+  success: Sequelize.STRING(100)
 }, {
       timestamps: false
   });

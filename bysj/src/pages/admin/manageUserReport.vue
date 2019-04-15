@@ -11,35 +11,33 @@
                   <li>操作</li>
               </ul>
               <ul>
-                  <li v-for="item of reportInfo" :key="item.id">
+                  <li v-for="(item,idx) of reportInfo" :key="item.id" class="detaiInfoList">
                       <ul class="replyInfo">
                           <li>{{item.house_id}}</li>
                           <li>{{item.who_report}}</li>
                           <li>{{item.textareaReport}}</li>
                           <li>
-                            <el-button @click="successReport(item.id)" type="success">通过</el-button>
-                            <el-button @click="failedReport(item.id)" type="info">不通过</el-button>
-                            <el-button @click="failedReport(item.id)" type="primary">展开房源信息</el-button>
+                            <el-button @click="successReport(item.house_id,idx,item.id)" type="success">通过</el-button>
+                            <el-button @click="failedReport(item.house_id,idx,item.id)" type="info">不通过</el-button>
+                            <el-button @click="HouseReportDetail(item.house_id)" type="primary">展开房源信息</el-button>
                           </li>
                       </ul>
                   </li>
               </ul>
-            <!-- <div v-for="item of detailInfo" :key="item.id">
+             <div v-if="isTrue">
               <div class="detail">
+                  <i class="el-icon-error" @click="close"></i>
                 <div class="img">
                     <img src="../../assets/fw1.jpg" alt="">
                 </div>
                 <div class="info">
-                    <p class="size">{{item.houseLarge}}
-                      <el-button @click="failedReport(item.id)" type="info">不通过</el-button>
-                      <el-button @click="successReport(item.id)" type="success">通过</el-button>
-                    </p>
-                    <p class="address">地理位置：{{item.address}}</p>
-                    <p class="phone">联系电话：{{item.phone}}</p>
-                    <p class="bPrice"><span class="price">￥{{item.price}}</span>/月</p>
+                    <p class="size">{{this.detailInfo.houseLarge}}</p>
+                    <p class="address">地理位置：{{this.detailInfo.address}}</p>
+                    <p class="phone">联系电话：{{this.detailInfo.phone}}</p>
+                    <p class="bPrice"><span class="price">￥{{this.detailInfo.price}}</span>/月</p>
                 </div>
               </div>
-              </div> -->
+              </div> 
           </div>
       </el-col>
     </el-row>
@@ -52,7 +50,9 @@ export default {
   data(){
     return {
     reportInfo:[],
-    detailInfo:[]
+    detailInfo:{},
+    idx:'',
+    isTrue:false
     }
   },
   methods:{
@@ -63,6 +63,61 @@ export default {
               newArr.unshift(JSON.parse(item))
           })
           this.reportInfo = newArr
+      },
+      successReport (house_id,idx,id) {
+          this.idx = idx
+       axios.post('http://localhost:3000/house/UpdateReviewedHouse',{
+          id:house_id,
+          reviewed:'3'
+          }).then(this.SuccessReportInfo,(err)=>console.log(err))
+
+        axios.post('http://localhost:3000/report/UpdateSuccessReport',{
+          id,
+          success:'2'
+          }).then(this.SuccessReportInfo1,(err)=>console.log(err))
+          
+      },
+      SuccessReportInfo1(res){
+          console.log(res)
+      },
+      SuccessReportInfo (res) {
+        this.reportInfo.splice(this.idx,1)
+        this.isTrue = false
+          const data = res.data
+          this.$message({
+              type:'success',
+              message:data.msg
+          })
+      },
+      failedReport (house_id,idx,id) {
+          this.idx = idx
+        axios.post('http://localhost:3000/report/UpdateSuccessReport',{
+          id,
+          success:'3'
+          }).then(this.FailedReportInfo,(err)=>console.log(err))
+          
+      },
+      FailedReportInfo (res) {
+          this.reportInfo.splice(this.idx,1)
+          this.isTrue = false
+          this.$message({
+              type:'success',
+              message:res.data.msg
+          })
+      },
+      HouseReportDetail (house_id) {
+        axios.post('http://localhost:3000/house/GetIdHouse',{
+          id:house_id,
+          }).then(this.getIdHouse,(err)=>console.log(err))
+      },
+      getIdHouse(res){
+        const data = JSON.parse(res.data.data)
+        this.detailInfo = data
+        console.log(this.detailInfo)
+        this.isTrue = true
+      },
+      close (){
+          this.isTrue = false
       }
   },
   mounted () {
@@ -134,6 +189,12 @@ export default {
         height 100%
         float left
         margin 8px
+        position relative
+        i
+            position absolute
+            right -5px
+            top -5px
+            cursor pointer
         .img 
             width 100%
             height 60%

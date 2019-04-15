@@ -1,10 +1,10 @@
 <template>
  <div class="home">
-   <my-header v-on:getN="getName" v-on:hasSess="getSess"/>
+   <my-header v-on:getN="getName" v-on:hasSess="getSess" v-on:handleData="getData"/>
     <el-row type="flex" justify="center">
       <el-col :span="16" class="center">
         <my-layout :sendN="name" :sendSess="hasSess"/>
-        <my-house/>
+        <my-house :sendData="dataList"/>
         <my-foot/>
       </el-col>
     </el-row>
@@ -21,7 +21,8 @@ export default {
   data () {
     return {
       name:'',
-      hasSess:''
+      hasSess:'',
+      dataList:[]
     }
   },
   components:{
@@ -36,6 +37,9 @@ export default {
     },
     getSess(res) {
       this.hasSess = res   
+    },
+    getData(res){
+      this.dataList = res
     }
   }
 }

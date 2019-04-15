@@ -15,32 +15,17 @@
             <el-menu-item index="1"><router-link to="/">首页</router-link></el-menu-item>
             <el-submenu index="2">
                 <template slot="title">我要找房</template>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-                <el-menu-item index="2-3">选项3</el-menu-item>
-                <el-submenu index="2-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="2-4-1">选项1</el-menu-item>
-                <el-menu-item index="2-4-2">选项2</el-menu-item>
-                <el-menu-item index="2-4-3">选项3</el-menu-item>
-                </el-submenu>
+                <el-menu-item index="2-1">搜索房源信息</el-menu-item>
+                <el-menu-item index="2-2">显示所有房源信息</el-menu-item>
             </el-submenu>
             <el-submenu index="3">
                 <template slot="title">我要出租</template>
-                <el-menu-item index="3-1">个人信息管理</el-menu-item>
                 <el-menu-item index="3-2">发布房源信息</el-menu-item>
                 <el-menu-item index="3-3">管理已发布的房源</el-menu-item>
-                <el-submenu index="3-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="3-4-1">选项1</el-menu-item>
-                <el-menu-item index="3-4-2">选项2</el-menu-item>
-                <el-menu-item index="3-4-3">选项3</el-menu-item>
-                </el-submenu>
             </el-submenu>
             <el-submenu index="4">
-                <template slot="title">举报中心</template>
-                <el-menu-item index="4-1">如何举报</el-menu-item>
-                <el-menu-item index="4-2">查看举报进度</el-menu-item>
+                <template slot="title">个人中心</template>
+                <el-menu-item index="4-1">个人信息管理</el-menu-item>
             </el-submenu>
             <el-submenu index="5" v-if="ifadmin">
                 <template slot="title">管理员权限</template>
@@ -48,6 +33,16 @@
                 <el-menu-item index="5-2">受理用户举报信息</el-menu-item>
             </el-submenu>
             </el-menu>
+              <transition
+              name="custom-classes-transition"
+              enter-active-class="animated bounceInLeft"
+              leave-active-class="animated bounceOutRight"
+            >
+              <div class="search" v-show="searchShow">
+                <input type="text" v-model="searchInfo" placeholder="请输入地区如省、市、区">
+                <el-button @click="searchSource">搜索</el-button> 
+                </div>
+              </transition>
             <div class="lgr" v-show="!haveSession">
                 <router-link to="/login">登录</router-link>/
                 <router-link to="/register">注册</router-link>
@@ -61,9 +56,17 @@
               <span class="exit" @click="handleExit">[退出]</span>
             </div>
         </div>
+        <div class="top" v-show="mapShow">
+          <span>您当前的位置为:  <span class="detailAdd">{{locationAdd}}</span></span>
+          <i class="el-icon-error" @click="close"></i>
+        </div>
+        <div class="center" v-show="mapShow">
+            <div id="l-map"></div>
+        </div>
     </el-col>
     <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
+   
 </div>   
 </template>
 
@@ -78,7 +81,12 @@ export default {
       unreadMsg1:0,
       unreadMsg2:0,
       isActive:true,
-      ifadmin:false
+      ifadmin:false,
+      mapShow:false,
+      adds:[],
+      locationAdd:'',
+      searchShow:false,
+      searchInfo:''
     }
   },
   methods: {
@@ -93,8 +101,7 @@ export default {
        }
      },
      handleSelect (key,path) {
-       console.log(key,path)
-       if(key === '3-1'){
+       if(key === '4-1'){
          this.$router.push('/userInfo')
        }
        if(key === '3-2'){
@@ -108,6 +115,12 @@ export default {
        }
         if(key === '5-2'){
          this.$router.push('/manageUserReport')
+       }
+         if(key === '2-2'){
+           this.mapShow = true
+       }
+         if(key === '2-1'){
+           this.searchShow = !this.searchShow
        }
      },
      handleExit () {
@@ -152,6 +165,19 @@ export default {
          this.unreadMsg2 =  data.data.length + this.unreadMsg1
        }
      },
+     searchSource () {
+          axios.post('http://localhost:3000/house/GetAddHouseSource',{
+            address:this.searchInfo
+          }).then(this.getAddHouseSource,(err)=>console.log(err))
+     },
+     getAddHouseSource (res) {
+       const data = res.data.data
+       let newDataArr = []
+       data.forEach((item)=>{
+         newDataArr.push(JSON.parse(item))
+       })
+          this.$emit('handleData',newDataArr)
+     },
      getCookie (c_name) {    
       if (document.cookie.length>0)
       {
@@ -174,10 +200,71 @@ export default {
    }else{
      document.cookie = name + "=" + escape(value);
     }
+  },
+  mapInfo () {
+        let _this = this
+        var map = new BMap.Map("l-map");
+
+        //定位
+        var point = new BMap.Point(116.331398,39.897445);
+        map.centerAndZoom(point,12);
+
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function(r){
+          if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            var mk = new BMap.Marker(r.point);
+            map.addOverlay(mk);
+            map.panTo(r.point);
+            map.centerAndZoom(new BMap.Point(r.point.lng,r.point.lat), 13);
+            var point1 = new BMap.Point(r.point.lng,r.point.lat);
+            var geoc = new BMap.Geocoder();   
+            geoc.getLocation(point1,function (rs) { 
+              var addComp = rs.addressComponents;
+              _this.locationAdd = addComp.province + addComp.city +  addComp.district +  addComp.street + addComp.streetNumber
+            })
+          }        
+      },{enableHighAccuracy: true}) 
+        map.enableScrollWheelZoom(true);
+        var myGeo = new BMap.Geocoder();
+        this.adds.forEach((item)=>{
+            myGeo.getPoint(item, function(point){
+            if (point) {
+              var address = new BMap.Point(point.lng, point.lat);
+              addMarker(address,new BMap.Label(item,{offset:new BMap.Size(20,-10)}));
+            }
+          }, "济南市");
+        })
+        
+        // 编写自定义函数,创建标注
+        function addMarker(point,label){
+          var marker = new BMap.Marker(point);
+          map.addOverlay(marker);
+          marker.setLabel(label);
+        }
+
+
+
+
+  },
+  close () {
+    this.mapShow = false
+  },
+  getAllHouseInfo(res){
+    const data = res.data.data
+    let newArr = []
+    data.forEach((item) =>{
+      let newData = JSON.parse(item)
+      newArr.push(newData.address)
+    })
+    this.adds = newArr
+    this.mapInfo()
   }
   },
   mounted () {
     this.getInfo()
+                axios.post('http://localhost:3000/house/GetAllHouse',{
+            msg:1
+          }).then(this.getAllHouseInfo,(err)=>console.log(err))
        axios.defaults.withCredentials = true//允许跨域访问
        axios.post('http://localhost:3000/appointment/GetAppointmentInfo',{
            username:this.getCookie('user'),
@@ -192,6 +279,32 @@ export default {
 
 </script>
 <style lang="stylus" scoped>
+.top
+    width 100%
+    line-height 50px
+    height 50px
+    background linear-gradient(to right, #12d2c6 2%, #0ebed4 97%) #12d2c6
+    border-radius 7px 7px 0 0
+    color:#ffff
+    margin-top 10px
+    span
+      margin-left 10px
+.center
+    width 100%
+    height 400px
+    background #ffffff
+    border 1px solid #e5e5e5
+    box-sizing border-box
+    overflow scroll
+  #l-map
+    width 100%
+    height 400px
+  .el-icon-error 
+    z-index 99
+    position absolute
+    right 336px
+    top 89px
+    cursor pointer
   a
     text-decoration none
   .el-row 
@@ -206,6 +319,22 @@ export default {
     background: #232836;
     position relative
     height 60px
+    .search
+      width 300px
+      height 100%
+      position absolute
+      top 0
+      right 200px
+      input
+        width 60%
+        height 60%
+        margin 10px
+        outline none
+        border-radius 30px
+        padding-left 10px
+      .el-button
+        padding 12px 20px
+        border-radius 20px
     .lgr
         display inline
         position absolute
@@ -245,4 +374,7 @@ export default {
           font-size 1px
   .grid-content 
     min-height: 60px;
+  .center::-webkit-scrollbar 
+      width: 0px;
+      height: 0px;
 </style>

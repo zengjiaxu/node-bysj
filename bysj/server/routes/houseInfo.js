@@ -322,7 +322,7 @@ router.post('/GetAllReviewedHouse',async (ctx,next)=>{
       })
 })
 
-//审核通过修改为2
+//审核通过修改为2或3
 router.post('/UpdateReviewedHouse',async (ctx,next)=>{
   const {id,reviewed} = ctx.request.body
     if(ctx.request.body){
@@ -353,5 +353,45 @@ router.post('/UpdateReviewedHouse',async (ctx,next)=>{
   
 }
 )
+
+//获取指定地区的房源
+router.post('/GetAddHouseSource',async (ctx,next)=>{
+  const {address} = ctx.request.body
+  await Pet.findAll({
+    where:{
+      address:{
+        [Sequelize.Op.like]:'%'+address+'%'
+      },
+      reviewed:"2"
+    }
+  }).then((p)=>{
+    let res = []
+    for (let i of p) {
+      res.push(JSON.stringify(i))
+  }
+  console.log(res)
+  return new Promise((resolve,reject)=>{
+      resolve(res)
+  })
+}).catch((err)=>{
+  console.log('failed',err)
+  }).then((res)=>{
+    if(res){
+      ctx.body={
+        code:1,
+        data:res
+    }
+    }else{
+      ctx.body={
+        code:0,
+        data:"未找到信息"
+    }
+    }
+
+  }).catch((err)=>{
+      console.log('failed',err)
+      })
+})
+
 
 module.exports = router

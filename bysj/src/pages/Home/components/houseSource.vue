@@ -45,6 +45,7 @@ export default {
         report_hourse_id:''
     }
   },
+  props:['sendData'],
   methods:{
       toDetail (x) {
           this.$router.push({name:'houseDetail',query:{id:x}})
