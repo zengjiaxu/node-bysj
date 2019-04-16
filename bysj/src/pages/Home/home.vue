@@ -4,7 +4,7 @@
     <el-row type="flex" justify="center">
       <el-col :span="16" class="center">
         <my-layout :sendN="name" :sendSess="hasSess"/>
-        <my-house :sendData="dataList"/>
+        <my-house :sendData="dataList" ref="childHouse"/>
         <my-foot/>
       </el-col>
     </el-row>
@@ -39,7 +39,9 @@ export default {
       this.hasSess = res   
     },
     getData(res){
+      console.log(res)
       this.dataList = res
+      this.$refs.childHouse.setDetailSearch(this.dataList)
     }
   }
 }

@@ -97,6 +97,13 @@ export default {
           }
           }
           return "";
+        },
+        setDetailSearch (res) {
+          this.houseSource = res
+          this.$message({
+            type:'success',
+            message:'数据更新成功，请在房源信息处查看'
+          })
         }
   },
   mounted () {
