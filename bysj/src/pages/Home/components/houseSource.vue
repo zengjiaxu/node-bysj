@@ -5,7 +5,7 @@
             <div class="center">
                 <ul>
                     <li v-for="item of houseSource" :key="item.id" @click="toDetail(item.id)">
-                        <img src="../../../assets/fw1.jpg" alt="">
+                        <img :src="item.imgUrl" alt="">
                         <p class="size">{{item.houseLarge}}</p>
                         <p class="address">地理位置：
                           {{item.address}}
@@ -135,7 +135,7 @@ export default {
           margin-left 10px
     .center
         width 100%
-        height 690px
+        height 700px
         background #ffffff
         border 1px solid #e5e5e5
         box-sizing border-box

@@ -7,6 +7,7 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const cors = require('koa2-cors')
 const session = require('koa-session')
+const koaBody = require('koa-body')
 const users = require('./routes/users')
 const userInfo = require('./routes/userInfo')
 const houseInfo = require('./routes/commenInfo')
@@ -14,6 +15,7 @@ const commenInfo = require('./routes/houseInfo')
 const replyInfo = require('./routes/replyInfo')
 const appointment = require('./routes/appointment')
 const report = require('./routes/report')
+const upload = require('./routes/upload')
 const Sequelize = require('sequelize');
 const config = require('./config/config.js');
 
@@ -40,7 +42,7 @@ app.use(async (ctx, next) => {
 
 //cors
 app.use(cors({
-  origin: 'http://localhost:1344',
+  origin: 'http://localhost:1888',
   credentials: true
 }))
 
@@ -55,14 +57,28 @@ let options = {
 app.keys = ['some secret hurr']
 app.use(session(options,app));
 
+
+
 // routes
 app.use(users.routes(), users.allowedMethods())
 app.use(userInfo.routes(), userInfo.allowedMethods())
-app.use(houseInfo.routes(), userInfo.allowedMethods())
+app.use(houseInfo.routes(), houseInfo.allowedMethods())
 app.use(commenInfo.routes(), commenInfo.allowedMethods())
 app.use(replyInfo.routes(), replyInfo.allowedMethods())
 app.use(appointment.routes(), appointment.allowedMethods())
 app.use(report.routes(), report.allowedMethods())
+
+//koa-body
+app.use(koaBody({
+  multipart: true,
+  formidable: {
+      maxFileSize: 200*1024*1024    // 设置上传文件大小最大限制，默认2M
+  }
+}))
+
+app.use(upload.routes(), upload.allowedMethods())
+
+
 
 // error-handling
 app.on('error', (err, ctx) => {

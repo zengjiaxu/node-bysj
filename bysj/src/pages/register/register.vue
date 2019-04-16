@@ -1,23 +1,27 @@
 <template>
- <div class="login">
-   <p>注册</p>
-  <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
-    <el-form-item label="账号" prop="name">
-      <el-input v-model="formLabelAlign.name"></el-input>
-    </el-form-item>
-    <el-form-item label="密码" prop="pass">
-      <el-input v-model="formLabelAlign.pass" type="password"></el-input>
-    </el-form-item>
-    <el-form-item label="邮箱" prop="email">
-      <el-input v-model="formLabelAlign.email" type="email"></el-input>
-    </el-form-item>
-  </el-form>
-  <el-button @click="submitReg" type="primary">注册</el-button>
+<div>
+  <headers/>
+  <div class="login">
+    <p>注册</p>
+    <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
+      <el-form-item label="账号" prop="name">
+        <el-input v-model="formLabelAlign.name"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="pass">
+        <el-input v-model="formLabelAlign.pass" type="password"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="formLabelAlign.email" type="email"></el-input>
+      </el-form-item>
+    </el-form>
+    <el-button @click="submitReg" type="primary">注册</el-button>
+  </div>
  </div>
 </template>
 
 <script>
 import axios from 'axios'
+import headers from '../Home/components/header.vue'
 export default {
   name: 'Login',
   data () {
@@ -42,6 +46,9 @@ export default {
         ]
     }
   }
+},
+components:{
+  headers
 },
 methods: {
   submitReg () {

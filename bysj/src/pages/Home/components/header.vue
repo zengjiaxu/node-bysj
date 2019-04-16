@@ -287,6 +287,8 @@ export default {
     border-radius 7px 7px 0 0
     color:#ffff
     margin-top 10px
+    z-index 999
+    position relative
     span
       margin-left 10px
 .center
@@ -296,14 +298,17 @@ export default {
     border 1px solid #e5e5e5
     box-sizing border-box
     overflow scroll
+    z-index 999
+    position relative
   #l-map
     width 100%
     height 400px
+    z-index 999
   .el-icon-error 
-    z-index 99
+    z-index 1999
     position absolute
-    right 336px
-    top 89px
+    right 16px
+    top 16px
     cursor pointer
   a
     text-decoration none

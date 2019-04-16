@@ -1,23 +1,27 @@
 <template>
- <div class="login">
-   <p>登录</p>
-  <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
-    <el-form-item label="账号" prop="name">
-      <el-input v-model="formLabelAlign.name"></el-input>
-    </el-form-item>
-    <el-form-item label="密码" prop="pass">
-      <el-input v-model="formLabelAlign.pass" type="password"></el-input>
-    </el-form-item>
-  </el-form>
-  <el-button @click="loginFrom" type="success">登录</el-button>
-  <router-link to="/forget">忘记密码</router-link>
- </div>
+<div>
+  <headers/>
+  <div class="login">
+    <p>登录</p>
+    <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
+      <el-form-item label="账号" prop="name">
+        <el-input v-model="formLabelAlign.name"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="pass">
+        <el-input v-model="formLabelAlign.pass" type="password"></el-input>
+      </el-form-item>
+    </el-form>
+    <el-button @click="loginFrom" type="success">登录</el-button>
+    <router-link to="/forget">忘记密码</router-link>
+  </div>
+</div>
 </template>
 
 <script>
 import axios from 'axios'
 import qs from 'qs'
 import { mapState } from 'vuex'
+import headers from '../Home/components/header.vue'
 export default {
   name: 'Login',
   data () {
@@ -39,6 +43,9 @@ export default {
         ]
     }
   }
+},
+components:{
+  headers
 },
 methods:{
   loginFrom () {

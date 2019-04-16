@@ -3,14 +3,14 @@
     <el-row>
         <el-col :span="24" class="cols">
             <el-row >
-            <el-col :span="14" class="left">
+            <el-col :span="10" class="left">
                 <el-carousel height="245px" :interval="2000">
                     <el-carousel-item v-for="item in img" :key="item" :style="{background:`url(${item})`,backgroundSize:'782px 245px'}">
                     <router-link to="/"></router-link>
                 </el-carousel-item>
                 </el-carousel>
                 </el-col> 
-            <el-col :span="4" class="center"></el-col> 
+            <el-col :span="8" class="center"></el-col> 
             <el-col :span="6" class="right">
                 <img src="http://img.mp.itc.cn/q_70,c_zoom,w_640/upload/20161229/6c94cbbac2ce4bed869b50e75aa431b6.gif" alt="" v-show="sendSess">
                 <img src="../../../assets/xly.png" alt="" v-show="!sendSess">
@@ -43,7 +43,10 @@
 export default {
   data(){
     return{
-      img:["https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553146249708&di=c721c0d99882df8beee55393a780f88d&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fae51f3deb48f8c54df9fce3130292df5e0fe7f5b.jpg","http://file1.youboy.com/e/2015/5/20/83/940147.png","https://www.oppein.cn/updata/uploads/201501/54ab56dad1551.jpg"],
+      img:["http://dingyue.nosdn.127.net/EXbMgD1sjZb8zZMMsmUnIDnyC6wgAM8MCSXVNR7MMaFVW1537756382272.jpeg",
+      "http://static.leiphone.com/uploads/new/article/740_740/201508/55d18b5762137.jpg",
+      "http://dingyue.nosdn.127.net/=W=vpeOIX5VbmFNfBjcyN80sfS8qGf6NjbGNnMlSNL1UR1537756383057.jpeg"
+      ],
       newName:''
     }
   },
@@ -111,8 +114,8 @@ export default {
   height: 100%;
 }
 .el-row:nth-child(1)>.center {
-  background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553144434161&di=2b0876ba649d0468038748e36c65489f&imgtype=0&src=http%3A%2F%2Fs8.sinaimg.cn%2Fbmiddle%2F001Sd502zy6Ua1RdIkT07%26690) no-repeat;
-  background-size:208px 245px;
+  background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555411467719&di=36d62ffb38eecd63e9f75d37f9690a33&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F901bc660543247cab8849de055e74b0c5a21edbe26ede-wezOCF_fw658) no-repeat;
+  background-size:415px 245px;
   border: 1px solid #e5e5e5;
 }
 .el-row:nth-child(1)>.right {
@@ -120,7 +123,7 @@ export default {
   background: #fff;
   margin-right: 0;
   border: 1px solid #e5e5e5;
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 .el-row:nth-child(1)>.right img{
   width: 60px;
@@ -148,7 +151,7 @@ margin-top: 10px;
   background: purple;
 }
 .el-row:nth-child(2)>.middle>.left {
-   background:url(http://img1.cache.netease.com/catchpic/A/AF/AF7D624C76DB2D70F63A027F5C6D7819.png) no-repeat;
+   background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555411668566&di=307ae7d2f1881d44f85c6c65983ed985&imgtype=0&src=http%3A%2F%2Fsrc.house.sina.com.cn%2Fimp%2Fimp%2Fdeal%2Fde%2Fe6%2F6%2F77cb09b6c8cda2608cda8710628_p24_mk24_s500X0.jpg) no-repeat;
   background-size:359px 169px;
   display: inline-block;
   width: calc(50% - 5px);
@@ -156,13 +159,13 @@ margin-top: 10px;
   border: 1px solid #e5e5e5;
 }
 .el-row:nth-child(2)>.middle>.right{
-  background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553144810735&di=01ed3cf007ccd39a52109ee29d5d45ec&imgtype=0&src=http%3A%2F%2F91cycn.37cy.com%2Fcy91cycn%2F1806%2F18-06-05%2F201806050924203.jpg) no-repeat;
+  background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555411585339&di=85ab4bb19a48ae5ae32d7c30b8d54cd6&imgtype=0&src=http%3A%2F%2Fku.90sjimg.com%2Fback_pic%2F00%2F04%2F21%2F8656223b0e52fb5.jpg) no-repeat;
   background-size:359px 169px;
   margin-left:5px ;
   border: 1px solid #e5e5e5;
 }
 .el-row:nth-child(2)>.center {
-  background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553145013428&di=40999aa9986eaa147c491459900b8e06&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dshijue1%252C0%252C0%252C294%252C40%2Fsign%3D99168c98e350352aa56c2d4b3b2a9187%2Fc75c10385343fbf211f4250cba7eca8064388fc1.jpg) no-repeat;
+  background:url(http://img.sc115.com/uploads/allimg/110620/2011062022355967.jpg) no-repeat;
   background-size:208px 178px;
   border: 1px solid #e5e5e5;
 }

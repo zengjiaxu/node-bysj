@@ -1,51 +1,53 @@
 <template>
    <div>
-<el-row type="flex" justify="center">
-      <el-col :span="16">
-          <div class="top"><span>待受理的举报信息</span></div>
-          <div class="main">
-              <ul class="replyInfo replyInfo1">
-                  <li>房源编号</li>
-                  <li>举报人</li>
-                  <li>举报理由</li>
-                  <li>操作</li>
-              </ul>
-              <ul>
-                  <li v-for="(item,idx) of reportInfo" :key="item.id" class="detaiInfoList">
-                      <ul class="replyInfo">
-                          <li>{{item.house_id}}</li>
-                          <li>{{item.who_report}}</li>
-                          <li>{{item.textareaReport}}</li>
-                          <li>
-                            <el-button @click="successReport(item.house_id,idx,item.id)" type="success">通过</el-button>
-                            <el-button @click="failedReport(item.house_id,idx,item.id)" type="info">不通过</el-button>
-                            <el-button @click="HouseReportDetail(item.house_id)" type="primary">展开房源信息</el-button>
-                          </li>
-                      </ul>
-                  </li>
-              </ul>
-             <div v-if="isTrue">
-              <div class="detail">
-                  <i class="el-icon-error" @click="close"></i>
-                <div class="img">
-                    <img src="../../assets/fw1.jpg" alt="">
+       <headers/>
+        <el-row type="flex" justify="center">
+            <el-col :span="16">
+                <div class="top"><span>待受理的举报信息</span></div>
+                <div class="main">
+                    <ul class="replyInfo replyInfo1">
+                        <li>房源编号</li>
+                        <li>举报人</li>
+                        <li>举报理由</li>
+                        <li>操作</li>
+                    </ul>
+                    <ul>
+                        <li v-for="(item,idx) of reportInfo" :key="item.id" class="detaiInfoList">
+                            <ul class="replyInfo">
+                                <li>{{item.house_id}}</li>
+                                <li>{{item.who_report}}</li>
+                                <li>{{item.textareaReport}}</li>
+                                <li>
+                                    <el-button @click="successReport(item.house_id,idx,item.id)" type="success">通过</el-button>
+                                    <el-button @click="failedReport(item.house_id,idx,item.id)" type="info">不通过</el-button>
+                                    <el-button @click="HouseReportDetail(item.house_id)" type="primary">展开房源信息</el-button>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div v-if="isTrue">
+                    <div class="detail">
+                        <i class="el-icon-error" @click="close"></i>
+                        <div class="img">
+                            <img :src="detailInfo.imgUrl" alt="">
+                        </div>
+                        <div class="info">
+                            <p class="size">{{this.detailInfo.houseLarge}}</p>
+                            <p class="address">地理位置：{{this.detailInfo.address}}</p>
+                            <p class="phone">联系电话：{{this.detailInfo.phone}}</p>
+                            <p class="bPrice"><span class="price">￥{{this.detailInfo.price}}</span>/月</p>
+                        </div>
+                    </div>
+                    </div> 
                 </div>
-                <div class="info">
-                    <p class="size">{{this.detailInfo.houseLarge}}</p>
-                    <p class="address">地理位置：{{this.detailInfo.address}}</p>
-                    <p class="phone">联系电话：{{this.detailInfo.phone}}</p>
-                    <p class="bPrice"><span class="price">￥{{this.detailInfo.price}}</span>/月</p>
-                </div>
-              </div>
-              </div> 
-          </div>
-      </el-col>
-    </el-row>
+            </el-col>
+            </el-row>
    </div>
 </template>
 
 <script type="text/ecmascript-6">
 import axios from 'axios'
+import headers from '../Home/components/header.vue'
 export default {
   data(){
     return {
@@ -54,6 +56,9 @@ export default {
     idx:'',
     isTrue:false
     }
+  },
+  components:{
+      headers
   },
   methods:{
       getReportInfo(res){

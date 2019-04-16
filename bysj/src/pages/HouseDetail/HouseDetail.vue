@@ -7,7 +7,7 @@
           <div class="main">
               <div class="detail">
                 <div class="img">
-                    <img src="../../assets/fw1.jpg" alt="">
+                    <img :src="imgUrl" alt="">
                 </div>
                 <div class="info">
                     <p class="size">{{houseLarge}}</p>
@@ -91,6 +91,7 @@ export default {
         price:'',
         jd:'',
         wd:'',
+        imgUrl:'',
         textarea:'',
         commen:[],
         replyInfo:false,
@@ -127,6 +128,7 @@ export default {
         this.phone = data.phone
         this.price = data.price
         this.sourceUser = data.username
+        this.imgUrl = data.imgUrl
         // 百度地图API功能
         var map = new BMap.Map("allmap");    // 创建Map实例
         var localSearch = new BMap.LocalSearch(map); //查找位置
@@ -365,7 +367,7 @@ export default {
         margin-left 10px
 .main
     width 100%
-    height 400px
+    height 480px
     box-sizing border-box
     border 1px solid #c
     border-top none
@@ -377,7 +379,7 @@ export default {
         margin 0
         .img 
             width 100%
-            height 60%
+            height 70%
             img 
                 width 100%
                 height 100%

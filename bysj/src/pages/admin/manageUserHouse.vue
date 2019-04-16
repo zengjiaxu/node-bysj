@@ -1,5 +1,6 @@
 <template>
    <div>
+     <headers/>
 <el-row type="flex" justify="center">
       <el-col :span="16">
           <div class="top"><span>待审核的房源信息</span></div>
@@ -7,7 +8,7 @@
             <div v-for="item of detailInfo" :key="item.id">
               <div class="detail">
                 <div class="img">
-                    <img src="../../assets/fw1.jpg" alt="">
+                    <img :src="item.imgUrl" alt="">
                 </div>
                 <div class="info">
                     <p class="size">{{item.houseLarge}}
@@ -58,12 +59,16 @@
 
 <script type="text/ecmascript-6">
 import axios from 'axios'
+import headers from '../Home/components/header.vue'
 export default {
   data(){
     return {
       detailInfo:[],
       userInfo:[]
     }
+  },
+  components:{
+    headers
   },
   methods:{
     deleteHouse (x) {
@@ -246,7 +251,7 @@ export default {
         margin 8px
         .img 
             width 100%
-            height 60%
+            height 250px
             img 
                 width 100%
                 height 100%

@@ -1,31 +1,35 @@
 <template>
- <div class="forget" :class="{newPass:haveYzm}">
-  <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
-    <div v-show="!haveYzm">
-      <el-form-item label="用户名" prop="user">
-        <el-input v-model="formLabelAlign.user"></el-input>
+<div>
+  <headers/>
+  <div class="forget" :class="{newPass:haveYzm}">
+    <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
+      <div v-show="!haveYzm">
+        <el-form-item label="用户名" prop="user">
+          <el-input v-model="formLabelAlign.user"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="formLabelAlign.email"></el-input>
+        </el-form-item>
+        <el-form-item label="验证码" prop="yzm">
+          <el-input v-model="formLabelAlign.yzm"></el-input>
+        </el-form-item>
+      </div>
+      <el-form-item label="新密码" prop="newPass" v-show="haveYzm">
+        <el-input v-model="formLabelAlign.newPass" type="password"></el-input>
       </el-form-item>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model="formLabelAlign.email"></el-input>
-      </el-form-item>
-      <el-form-item label="验证码" prop="yzm">
-        <el-input v-model="formLabelAlign.yzm"></el-input>
-      </el-form-item>
-    </div>
-    <el-form-item label="新密码" prop="newPass" v-show="haveYzm">
-      <el-input v-model="formLabelAlign.newPass" type="password"></el-input>
-    </el-form-item>
-  </el-form>
-  <el-button @click="sendMsg" :disabled="isDisabledOne" type="primary" v-show="!haveYzm">获取验证码</el-button>
-  <span v-show="isShow">请{{timers}}秒后获取</span>
-  <el-button @click="sure" :disabled="isDisabledTwo" type="success" v-show="!haveYzm">确认</el-button>
-  <el-button @click="submitNewpass"  type="success" v-show="haveYzm">提交</el-button>
- </div>
+    </el-form>
+    <el-button @click="sendMsg" :disabled="isDisabledOne" type="primary" v-show="!haveYzm">获取验证码</el-button>
+    <span v-show="isShow">请{{timers}}秒后获取</span>
+    <el-button @click="sure" :disabled="isDisabledTwo" type="success" v-show="!haveYzm">确认</el-button>
+    <el-button @click="submitNewpass"  type="success" v-show="haveYzm">提交</el-button>
+  </div>
+</div>
 </template>
 
 <script>
 import axios from 'axios'
 import qs from 'qs'
+import headers from '../Home/components/header.vue'
 export default {
   name: 'Login',
   data () {
@@ -62,6 +66,9 @@ export default {
     timer:null,
     isShow:false
   }
+},
+components:{
+  headers
 },
 methods:{
  sendMsg () {

@@ -1,11 +1,21 @@
 <template>
  <div>
+   <headers/>
      <div class="formInfo">
          <p>发布房源信息</p>
         <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
-        <el-form-item label="图片地址" prop="imgUrl">
-            <el-input v-model="formLabelAlign.imgUrl"></el-input>
-        </el-form-item>
+          <el-upload
+          class="upload-demo"
+          action="http://localhost:3000/upload"
+          :file-list="fileList"
+          :limit="howMuch"
+          :on-exceed="fileMore"
+          :on-success="successUpload"
+          :on-error="failedUpload"
+          list-type="picture">
+          <el-button size="small" type="primary">点击上传房屋图片</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2m</div>
+        </el-upload>
         <el-form-item label="房屋大小" prop="houseLarge">
             <el-input v-model.number="formLabelAlign.houseLarge"></el-input>
         </el-form-item>
@@ -31,6 +41,7 @@
 
 <script>
 import axios from 'axios'
+import headers from '../Home/components/header.vue'
 export default {
   name:'userInfo',
   data () {
@@ -38,17 +49,16 @@ export default {
         labelPosition: 'left',
         disabled:false,
         id:'',
-        formLabelAlign: {
         imgUrl: '',
+        howMuch:1,
+        fileList:[],
+        formLabelAlign: {
         houseLarge: '',
         phone: '',
         address:'',
         price:''
         },
         rules: {
-        imgUrl: [
-        { required: true,type: 'string', message: '请输入图片链接', trigger: 'blur' }
-        ],
         houseLarge: [
         { required: true,type: 'string', message: '请输入房屋大小，例如：三室一厅', trigger: 'blur' }
         ],
@@ -68,29 +78,32 @@ export default {
     }
     }
   },
+  components:{
+      headers
+  },
   methods: {
   submitHouseInfo () {
       this.$refs.ruleForm.validate((val)=>{
         if(val){//表单验证通过
+        if(this.imgUrl){
             axios.post('http://localhost:3000/house/InsertHouseInfo',{
-            imgUrl: this.formLabelAlign.imgUrl,
+            imgUrl: this.imgUrl,
             houseLarge: this.formLabelAlign.houseLarge,
             phone: this.formLabelAlign.phone,
             address:this.formLabelAlign.address,
             price:this.formLabelAlign.price,
             username:this.getCookie('user')
           }).then(this.InsertSuccessInfo,(err)=>console.log(err))
+        }else{
+          this.$message({
+            type:'error',
+            message:'请上传图片'
+          })
+        }
         }else{//表单验证不通过
            this.$message('请根据提示输入正确的数据')
         }
       })
-  },
-  getSuccessInfo (res) {
-      this.$message({
-              type:'success',
-              message:res.data.msg
-              })
-      console.log(res)
   },
   InsertSuccessInfo (res) {
     this.$message({
@@ -102,7 +115,7 @@ export default {
       this.$refs.ruleForm.validate((val)=>{
         if(val){//表单验证通过
             axios.post('http://localhost:3000/house/updateHouseInfo',{
-            imgUrl: this.formLabelAlign.imgUrl,
+            imgUrl: this.imgUrl,
             houseLarge: this.formLabelAlign.houseLarge,
             phone: this.formLabelAlign.phone,
             address:this.formLabelAlign.address,
@@ -120,15 +133,13 @@ export default {
               message:res.data.msg
               })
   },
-  getSuccessInfo(res){
+    getSuccessInfo(res){
     const data = JSON.parse(res.data.data)
     console.log(data)
-    this.formLabelAlign.imgUrl =  data.imgUrl,
     this.formLabelAlign.houseLarge =  data.houseLarge,
     this.formLabelAlign.phone =  data.phone,
     this.formLabelAlign.address = data.address,
     this.formLabelAlign.price = data.price
-
   },
   getUserInfo (res){
     console.log(res)
@@ -145,7 +156,7 @@ export default {
       this.$message(
         {
             type:'success',
-            message:'您的个人信息已通过审核，请发布房源信息'
+            message:'您的个人信息已通过审核，请发布房源或修改信息'
         }
         )
       this.disabled = false
@@ -173,10 +184,31 @@ export default {
   }
   }
   return "";
+},
+successUpload(res){
+  const url = res.data.url
+  this.imgUrl = url
+  console.log(this.imgUrl)
+  this.$message({
+    type:'success',
+    message:'上传成功'
+  })
+},
+failedUpload(){
+  this.$message({
+    type:'error',
+    message:'上传失败'
+  })
+},
+fileMore(){
+    this.$message({
+    type:'error',
+    message:'图片超出个数，最多一个'
+  })
 }
 },
 mounted(){
- this.id =  this.$route.query.id  
+  this.id =  this.$route.query.id  
  if(this.id){
     axios.post('http://localhost:3000/house/GetIdHouse',{
             id:this.id
@@ -198,7 +230,7 @@ mounted(){
 <style scoped lang="stylus">
 .formInfo
     width 400px
-    height 500px
+    min-height 500px
     border 1px solid #cccccc
     padding 15px
     border-radius 5px
@@ -208,6 +240,8 @@ mounted(){
     transform: translate(-50%,-50%);
     .el-form
       margin-top 30px
+      .upload-demo
+        margin-bottom 20px
     p
         text-align center
         font-size 20px

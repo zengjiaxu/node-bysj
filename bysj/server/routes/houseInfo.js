@@ -3,7 +3,6 @@ const router = require('koa-router')()
 const Sequelize = require('sequelize');
 const config = require('../config/config.js');
 
-
 //创建连接池
 let sequelize = new Sequelize(config.database, config.username, config.password, {
   host: config.host,

@@ -1,5 +1,6 @@
 <template>
  <div>
+    <headers/>
      <div class="formInfo">
          <p>个人信息</p>
         <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
@@ -38,6 +39,7 @@
 
 <script>
 import axios from 'axios'
+import headers from '../Home/components/header.vue'
 export default {
   name:'userInfo',
   data () {
@@ -76,6 +78,9 @@ export default {
         ]
     }
     }
+  },
+  components:{
+    headers
   },
   methods: {
   submitUserInfo () {
