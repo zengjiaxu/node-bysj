@@ -166,6 +166,10 @@ export default {
               type:'success',
               message:res.data.msg
               })
+        this.active = 1
+        this.status = 'wait'
+        this.titles= '未完成'
+        this.status1 = 'success'
       console.log(res)
   },
   getCookie (c_name) {    
@@ -186,7 +190,7 @@ export default {
 mounted(){
             axios.post('http://localhost:3000/users/GetUserInfo',{
             username:this.getCookie('user')
-          }).then(this.getUserInfo,(err)=>console.log(err))      
+          }).then(this.getUserInfo,(err)=>console.log(err))   
 }
 }
 </script>
