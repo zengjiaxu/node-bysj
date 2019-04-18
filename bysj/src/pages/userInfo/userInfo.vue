@@ -1,6 +1,7 @@
 <template>
  <div>
     <headers/>
+    <div class="pst">
      <div class="formInfo">
          <p>个人信息</p>
         <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
@@ -34,6 +35,7 @@
           <el-step :title="titles" :status="status"></el-step>
         </el-steps>
      </div>
+    </div>
  </div>
 </template>
 
@@ -189,6 +191,10 @@ mounted(){
 }
 </script>
 <style scoped lang="stylus">
+.pst
+  position relative
+  width 100%
+  height calc(100vh - 1.5rem)
 .formInfo
     width 400px
     height 520px
@@ -212,4 +218,7 @@ mounted(){
       .el-button
         flex 1
         margin 5px
+@media screen and (max-width: 532px) 
+  .formInfo
+    width 80%
 </style>

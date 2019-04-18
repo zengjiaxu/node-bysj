@@ -24,24 +24,25 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .foot
-    margin-top 10px
+    margin-top 0.25rem
     background rgba(220,220,220,0.4)
     width 100%
-    height 120px
+    height 3rem
     text-align center
     color #AAAAAA
-    margin-bottom 10px
+    margin-bottom .25rem
+    font-size .35rem
     ul
       display flex
       justify-content center
-      padding 0 240px
+      padding 0 6rem
       li
         background #000
-        width 40px
-        height 40px
+        width 1rem
+        height 1rem
         border-radius 50%
         list-style none
-        margin 20px
+        margin .5rem
         cursor pointer
         opacity 0.5
         a
@@ -49,7 +50,7 @@ export default {
           height 100%
           display inline-block
       li:hover
-        border-radius 5px
+        border-radius .125rem
         opacity 1
         transition 0.5s
       li:nth-of-type(1)

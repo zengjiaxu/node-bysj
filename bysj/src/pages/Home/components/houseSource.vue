@@ -1,7 +1,7 @@
 <template>
     <div class="hourseSource">
         <div class="house" v-for="(item,idx) of msg" :key="idx">
-            <div class="top"><span>房源信息</span></div>
+            <div class="top"><span>最新房源信息</span></div>
             <div class="center">
                 <ul>
                     <li v-for="item of houseSource" :key="item.id" @click="toDetail(item.id)">
@@ -54,7 +54,7 @@ export default {
         let data = res.data.data
         let newRes = []
         data.forEach((item)=>{
-            newRes.push(JSON.parse(item))
+            newRes.unshift(JSON.parse(item))
           })
         this.houseSource = newRes
       },
@@ -115,27 +115,28 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .hourseSource >>> .el-dialog
-    border-radius 10px
+    border-radius .25rem
     width 40%
 .hourseSource >>> .el-dialog__body
-    height 160px
+    height 4rem
 .hourseSource >>> .reportBtn 
     float right
-    margin-top 20px
+    margin-top .5rem
 .house
     width 100%
-    margin-top 40px
+    margin-top 1rem
+    font-size .35rem
     .top
         width 100%
-        line-height 50px
+        line-height 1.25rem
         background #c0ac85
-        border-radius 7px 7px 0 0
+        border-radius .175rem .175rem 0 0
         color:#ffff
         span
-          margin-left 10px
+          margin-left .25rem
     .center
         width 100%
-        height 700px
+        height 17.5rem
         background #ffffff
         border 1px solid #e5e5e5
         box-sizing border-box
@@ -146,34 +147,34 @@ export default {
           height 18vw
           padding 0
           float left
-          margin 10px 0 0 11px
-          margin-bottom 20px
+          margin .25rem 0 0 .275rem
+          margin-bottom .5rem
           position relative
           cursor pointer
           img 
             width 100%
             height 69%
           p
-            font-size 14px
+            font-size .35rem
             color #999
-            line-height 20px
+            line-height .5rem
             .report
               color red
               float right 
-              margin-right 20px
+              margin-right .5rem
               z-index 99
               color #409EFF
           .bPrice
             text-align right 
             display inline-block
             position absolute
-            bottom  -7px
+            bottom  -0.175rem
             right 0
-            font-size 14px
+            font-size .35rem
             color #999
           .price
             color orange
-            font-size 30px
+            font-size .75rem
     .center::-webkit-scrollbar 
         width: 0px;
         height: 0px;

@@ -329,49 +329,49 @@ export default {
 </script>
 <style scoped lang="stylus">
 .subscribe >>> .el-textarea__inner
-    padding-right 85px
+    padding-right 2.125rem
 .subscribe >>> .el-button
     position absolute
-    right 5px
-    bottom 5px
+    right .125rem
+    bottom .125rem
     line-height 1px
 .commenContainer >>> .el-button
     position absolute
-    right 5px
-    bottom 5px
+    right .125rem
+    bottom .125rem
     line-height 1px
 .HouseDetail >>> .el-dialog__body
-    height 160px
+    height 4rem
 .HouseDetail >>> .el-date-editor
-    margin-bottom 20px
+    margin-bottom .5rem
 .HouseDetail >>> .el-dialog
-    border-radius 10px
+    border-radius .25rem
     width 40%
 .top
     width 100%
-    line-height 50px
-    margin-top 20px
+    line-height 1.25rem
+    margin-top .5rem
     background: linear-gradient(to right, rgb(243, 182, 74) 2%, rgb(242, 197, 69) 97%) rgb(243, 182, 74)
-    border-radius 7px 7px 0 0
+    border-radius .175rem .175rem 0 0
     color:#ffff
     span
-        margin-left 10px
+        margin-left .25rem
 .top1
     width 100%
-    line-height 50px
-    margin-top 20px
+    line-height 1.25rem
+    margin-top .5rem
     background linear-gradient(to right, rgb(18, 210, 198) 2%, rgb(14, 190, 212) 97%) rgb(18, 210, 198);
-    border-radius 7px 7px 0 0
+    border-radius .175rem .175rem 0 0
     color:#ffff
     span
-        margin-left 10px
+        margin-left .25rem
 .main
     width 100%
-    height 480px
+    height 12rem
     box-sizing border-box
     border 1px solid #c
     border-top none
-    padding 10px
+    padding .25rem
     .detail
         width 44%
         height 100%
@@ -385,24 +385,24 @@ export default {
                 height 100%
         .info
             width 100%
-            height 120px
-            margin-top 10px
+            height 3rem
+            margin-top .25rem
             position relative
             p
-                font-size 14px
+                font-size .35rem
                 color #999
-                line-height 40px
+                line-height 1rem
             .bPrice
                 text-align right 
                 display inline-block
                 position absolute
                 bottom  0
                 right 0
-                font-size 14px
+                font-size .35rem
                 color #999
             .price
                 color orange
-                font-size 30px
+                font-size .75rem
             .el-button
                 position absolute
                 top 0
@@ -416,54 +416,54 @@ export default {
     position relative
 .commenContainer ul li
     width 100%
-    min-height 60px
-    margin-top 5px
-    border-radius 5px
+    min-height 1.5rem
+    margin-top .125rem
+    border-radius .125rem
     border 1px solid #ddd
     list-style none
-    padding 10px
+    padding .25rem
     box-sizing border-box
-    font-size 15px
+    font-size .375rem
     color #000
     position relative
     .userDetail
         position absolute
-        right 125px
-        bottom 30px
+        right 3.125rem
+        bottom .75rem
         color #cccccc
-        font-size  10px
+        font-size  .25rem
     .timeDetail
         position absolute
-        right 125px
-        bottom 5px
+        right 3.125rem
+        bottom .125rem
         color #cccccc
-        font-size  10px
+        font-size  .25rem
     .replyDetailInfo
-        margin-left 20px
-        font-size 13px
+        margin-left .5rem
+        font-size .325rem
         color #000
-        min-height 10px
-        margin-top 8px
-        padding-left 8px
-        border-left 3px solid #ccc
+        min-height .25rem
+        margin-top .2rem
+        padding-left .2rem
+        border-left 0.075rem solid #ccc
         width:75%
         position relative
         .whoSub
-            font-size 13px
+            font-size 0.325rem
             color #cccccc
-            margin-left 50px
+            margin-left 1.25rem
             position absolute
-            right 25px
-            bottom 5px
+            right 0.625rem
+            bottom 0.125rem
             .whoRep
                 color #000
-                font-size 13px
+                font-size .325rem
         .fz
             color orange
             position absolute
-            right -14px
-            bottom 5px
+            right -0.325rem
+            bottom .125rem
 .replyBtn
     float right
-    margin-top 15px
+    margin-top .375rem
 </style>

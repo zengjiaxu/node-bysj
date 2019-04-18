@@ -3,10 +3,52 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=9PhGwBd7GLFh8Lni6wGt5VvIiCwZG54A"></script>
     <title>房屋租聘网</title>
+    <script>
+      (function(win){
+	var ratio,scaleValue,renderTime,
+			document=window.document,
+			docElem=document.documentElement,
+			vpm=document.querySelector('meta[name="viewport"]');
+	if(vpm){
+		var tempArray=vpm.getAttribute("content").match(/initial\-scale=(["']?)([\d\.]+)\1?/);
+		if(tempArray){
+			scaleValue=parseFloat(tempArray[2]);
+			ratio=parseInt(1/scaleValue);
+		}
+	}else{
+		vpm=document.createElement("meta");
+		vpm.setAttribute("name","viewport");
+		vpm.setAttribute("content","width=device-width,initial-scale=1,user-scalable=no,minimal-ui");
+		docElem.firstElementChild.appendChild(vpm);
+	}
+
+	win.addEventListener("resize",function(){
+		clearTimeout(renderTime);
+		renderTime=setTimeout(initPage,300);
+	},false);
+
+	win.addEventListener("pageshow", function(e) {
+		e.persisted && (clearTimeout(renderTime),renderTime=setTimeout(initPage,300));
+	}, false);
+
+	"complete"===document.readyState?document.body.style.fontSize =12*ratio+"px":
+			document.addEventListener("DOMContentLoaded",function(){
+				document.body.style.fontSize =12*ratio+"px";
+			},false);
+	initPage();
+	function initPage(){
+		var htmlWidth=docElem.getBoundingClientRect().width;
+		htmlWidth/ratio>1903 && (htmlWidth=1903*ratio);
+		win.rem=htmlWidth/47.575;
+		docElem.style.fontSize=win.rem+"px";
+	}
+})(window);
+    </script>
   </head>
   <body>
     <noscript>

@@ -107,4 +107,7 @@ methods: {
     margin-top 30px
   p
     font-size 20px
+@media screen and (max-width: 532px) 
+  .login
+    width 80%
 </style>

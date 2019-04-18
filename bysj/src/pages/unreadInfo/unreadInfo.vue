@@ -183,32 +183,39 @@ export default {
 </script>
 
 <style scoped lang="stylus">
+.main >>> .el-button
+    padding .3rem .5rem
+    font-size .35rem
+    border-radius .1rem
 .top
     width 100%
-    line-height 50px
-    margin-top 20px
+    line-height 1.25rem
+    margin-top .5rem
     background: linear-gradient(to right, rgb(0, 191, 255) 22%, rgb(135 ,206, 250) 97%); 
-    border-radius 7px 7px 0 0
+    border-radius .175rem .175rem 0 0
     color:#ffff
+    font-size .35rem
     span
-        margin-left 10px
+        margin-left .25rem
 .top1
     width 100%
-    line-height 50px
-    margin-top 20px
+    line-height 1.25rem
+    margin-top .5rem
     background: linear-gradient(to right, #12d2c6 2%, #0ebed4 97%) #12d2c6 
-    border-radius 7px 7px 0 0
+    border-radius .175rem .175rem 0 0
     color:#ffff
+    font-size .35rem
     span
-        margin-left 10px
+        margin-left .25rem
 .main
     width 100%
-    height 500px
+    height 12.5rem
     box-sizing border-box
     border 1px solid #c
     border-top none
-    padding 10px
+    padding .25rem
     overflow scroll
+    font-size .35rem
     .appointmentInfoTop
       display flex
       li
@@ -217,14 +224,14 @@ export default {
         text-align center
         font-weight bolder
     ul li
-      line-height 50px
+      line-height 1.25rem
       border-bottom 1px solid #ddd
       .appointmentInfo
           display flex
           li
             flex 1
             list-style none
-            line-height 50px
+            line-height 1.25rem
             text-align center
             .blueIcon
               color #409EFF
@@ -233,9 +240,9 @@ export default {
           .btn
               text-align center
               .el-button
-                line-height 10px
+                line-height .25rem
             .infoReply
-                margin-right 10px
+                margin-right .25rem
                 width 84%
                 display inline-block
                 text-align left 

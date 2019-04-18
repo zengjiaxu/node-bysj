@@ -3,14 +3,14 @@
     <el-row>
         <el-col :span="24" class="cols">
             <el-row >
-            <el-col :span="10" class="left">
-                <el-carousel height="245px" :interval="2000">
-                    <el-carousel-item v-for="item in img" :key="item" :style="{background:`url(${item})`,backgroundSize:'782px 245px'}">
+            <el-col :span="14" class="left">
+                <el-carousel height="6.125rem" :interval="2000">
+                    <el-carousel-item v-for="item in img" :key="item" :style="{background:`url(${item})`,backgroundSize:'19.55rem 6.125rem'}">
                     <router-link to="/"></router-link>
                 </el-carousel-item>
                 </el-carousel>
                 </el-col> 
-            <el-col :span="8" class="center"></el-col> 
+            <el-col :span="4" class="center"></el-col> 
             <el-col :span="6" class="right">
                 <img src="http://img.mp.itc.cn/q_70,c_zoom,w_640/upload/20161229/6c94cbbac2ce4bed869b50e75aa431b6.gif" alt="" v-show="sendSess">
                 <img src="../../../assets/xly.png" alt="" v-show="!sendSess">
@@ -91,22 +91,23 @@ export default {
 
 <style scoped>
 .guide{
-    margin-top: 10px;
-    height: 424px;
+    margin-top: .25rem;
+    height: 10.6rem;
+    font-size: .35rem
 }
 .el-row{
-  height: 187px;
+  height: 4.675rem;
   display: flex
 }
 .el-col{
   height: 100%;
-  margin-right: 10px;
+  margin-right: .25rem;
 }
 .cols{
     margin-right: 0;
 }
 .el-row:nth-child(1){
-  height: 245px;
+  height: 6.125rem;
 }
 .el-row:nth-child(1)>.left a {
   display: block;
@@ -114,8 +115,8 @@ export default {
   height: 100%;
 }
 .el-row:nth-child(1)>.center {
-  background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555411467719&di=36d62ffb38eecd63e9f75d37f9690a33&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F901bc660543247cab8849de055e74b0c5a21edbe26ede-wezOCF_fw658) no-repeat;
-  background-size:415px 245px;
+  background:url(../../../assets/kj.jpg) no-repeat;
+  background-size:100% 100%;
   border: 1px solid #e5e5e5;
 }
 .el-row:nth-child(1)>.right {
@@ -126,23 +127,23 @@ export default {
   box-sizing: border-box;
 }
 .el-row:nth-child(1)>.right img{
-  width: 60px;
+  width: 1.5rem;
 border-radius: 50%;
-margin-top: 30px;
+margin-top: .75rem;
 }
 .el-row:nth-child(1)>.right p{
-margin-top: 10px;
+margin-top: .25rem;
 }
 .el-row:nth-child(1)>.right a{
   display: block;
   border: 1px solid #e5e5e5;
-  width: 123px;
-  line-height: 40px;
-  border-radius: 20px;
+  width: 3.075rem;
+  line-height: 1rem;
+  border-radius: .5rem;
   text-align: center;
   margin: 0 auto;
   color: #333;
-  margin-top: 10px;
+  margin-top: .25rem;
 }
 .el-row:nth-child(1)>.right a:hover{
   background:rgba(153, 153,153, 0.1);
@@ -151,8 +152,8 @@ margin-top: 10px;
   background: purple;
 }
 .el-row:nth-child(2)>.middle>.left {
-   background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555411668566&di=307ae7d2f1881d44f85c6c65983ed985&imgtype=0&src=http%3A%2F%2Fsrc.house.sina.com.cn%2Fimp%2Fimp%2Fdeal%2Fde%2Fe6%2F6%2F77cb09b6c8cda2608cda8710628_p24_mk24_s500X0.jpg) no-repeat;
-  background-size:359px 169px;
+   background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555411467719&di=36d62ffb38eecd63e9f75d37f9690a33&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F901bc660543247cab8849de055e74b0c5a21edbe26ede-wezOCF_fw658) no-repeat;
+  background-size:100% 100%;
   display: inline-block;
   width: calc(50% - 5px);
   height: 100%;
@@ -160,13 +161,14 @@ margin-top: 10px;
 }
 .el-row:nth-child(2)>.middle>.right{
   background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555411585339&di=85ab4bb19a48ae5ae32d7c30b8d54cd6&imgtype=0&src=http%3A%2F%2Fku.90sjimg.com%2Fback_pic%2F00%2F04%2F21%2F8656223b0e52fb5.jpg) no-repeat;
-  background-size:359px 169px;
-  margin-left:5px ;
+  background-size:100% 100%;
+  margin-left:.125rem ;
   border: 1px solid #e5e5e5;
+  float:right;
 }
 .el-row:nth-child(2)>.center {
   background:url(http://img.sc115.com/uploads/allimg/110620/2011062022355967.jpg) no-repeat;
-  background-size:208px 178px;
+  background-size:100% 100%;
   border: 1px solid #e5e5e5;
 }
 .el-row:nth-child(2)>.right {
@@ -176,23 +178,29 @@ margin-top: 10px;
   box-sizing: border-box
 }
 .el-row:nth-child(2)>.right>p:nth-of-type(1){
-  font-size: 15px
+  font-size: .375rem
 }
 .el-row:nth-child(2)>.right>p:nth-of-type(2){
-  font-size: 12px
+  font-size: .3rem
 }
 .el-row:nth-child(2)>.right>p>span{
   color:red
 }
 .el-row:nth-child(2)>.right>img {
-  margin-top: 15px;
-  width: 100px;
+  margin-top: .375rem;
+  width: 2.5rem;
 }
 .el-row:nth-child(2){
-  margin-top: 10px;
-  height: 169px;
+  margin-top: .25rem;
+  height: 4.225rem;
 }
 a{
   text-decoration: none
 }
+@media screen and (max-width: 716px) {
+  .el-row:nth-child(1)>.right a{
+      line-height: .5rem
+  }
+}
+
 </style>

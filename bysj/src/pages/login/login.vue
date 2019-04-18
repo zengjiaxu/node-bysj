@@ -91,6 +91,7 @@ methods:{
 }
 </script>
 <style lang="stylus" scoped>
+
 .login
   background #ffffff
   width 500px
@@ -120,4 +121,7 @@ methods:{
     text-decoration underline
   p
     font-size 20px
+@media screen and (max-width: 532px) 
+  .login
+    width 80%
 </style>

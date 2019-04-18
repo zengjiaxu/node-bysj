@@ -1,6 +1,7 @@
 <template>
  <div>
    <headers/>
+   <div class="pst">
      <div class="formInfo">
          <p>发布房源信息</p>
         <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules" ref="ruleForm">
@@ -36,6 +37,7 @@
           <el-button @click="updateHouseInfo" type="primary" :disabled="disabled">保存</el-button>
         </div>
      </div>
+    </div>
  </div>
 </template>
 
@@ -142,33 +144,42 @@ export default {
     this.formLabelAlign.price = data.price
   },
   getUserInfo (res){
-    console.log(res)
-    const data =JSON.parse(res.data.data)
-    if(data.reviewed_user === '1'){
-            this.$message(
-        {
-            message:'您的个人信息正在审核中，请稍后再试'
+    if(res.data.code === 1){
+      const data =JSON.parse(res.data.data)
+      if(data.reviewed_user === '1'){
+                this.$message(
+            {
+                message:'您的个人信息正在审核中，请稍后再试'
+            }
+            )
+          this.disabled = true
         }
-        )
-      this.disabled = true
-    }
-    if(data.reviewed_user === '2'){
-      this.$message(
-        {
-            type:'success',
-            message:'您的个人信息已通过审核，请发布房源或修改信息'
+        if(data.reviewed_user === '2'){
+          this.$message(
+            {
+                type:'success',
+                message:'您的个人信息已通过审核，请发布房源或修改信息'
+            }
+            )
+          this.disabled = false
         }
-        )
-      this.disabled = false
-    }
-    if(data.reviewed_user === '3'){
-      this.$message(
-        {
-            type:'error',
-            message:'您的个人信息未通过审核，请重新提交'
+        if(data.reviewed_user === '3'){
+          this.$message(
+            {
+                type:'error',
+                message:'您的个人信息未通过审核，请重新提交'
+            }
+            )
+          this.disabled = true
         }
-        )
-      this.disabled = true
+    }else{
+          this.$message(
+            {
+                type:'error',
+                message:res.data.data
+            }
+            )
+          this.disabled = true
     }
   },
   getCookie (c_name) {    
@@ -228,26 +239,42 @@ mounted(){
 }
 </script>
 <style scoped lang="stylus">
-.formInfo
-    width 400px
-    min-height 500px
-    border 1px solid #cccccc
-    padding 15px
-    border-radius 5px
-    position absolute
-    left 50%
-    top 50%
-    transform: translate(-50%,-50%);
-    .el-form
-      margin-top 30px
-      .upload-demo
-        margin-bottom 20px
-    p
-        text-align center
-        font-size 20px
-    .btnCtn
-      display flex
-      .el-button
-        flex 1
-        margin 5px
-</style>
+.formInfo >>> .el-button--small
+    padding .225rem .375rem
+    font-size .3rem
+    border-radius .075rem
+.formInfo >>> .el-button
+    font-size .35rem
+.formInfo >>> .el-form-item__label
+    font-size .35rem
+.pst
+  position relative
+  width 100%
+  height calc(100vh - 1.5rem)
+  .formInfo
+      font-size .35rem
+      width 10rem
+      min-height 12.5rem
+      border 1px solid #cccccc
+      padding 0.375rem
+      border-radius 0.125rem
+      position absolute
+      left 50%
+      top 50%
+      transform: translate(-50%,-50%)
+      .el-form
+        margin-top 0.75rem
+        .upload-demo
+          margin-bottom .5rem
+      p
+          text-align center
+          font-size .35rem
+      .btnCtn
+        display flex
+        .el-button
+          flex 1
+          margin .125rem
+  @media screen and (max-width: 672px) 
+    .formInfo
+        width 80%
+  </style>

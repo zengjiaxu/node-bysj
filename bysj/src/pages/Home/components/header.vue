@@ -1,5 +1,5 @@
 <template>
- <div>
+ <div class="headers">
     <el-row>
     <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
     <el-col :span="16">
@@ -279,21 +279,45 @@ export default {
 
 </script>
 <style lang="stylus" scoped>
+.headers >>> .el-menu--horizontal>.el-submenu .el-submenu__title
+  height 1.5rem
+  line-height 1.5rem
+  width 2.9rem
+  margin 0 .5rem
+.headers >>> .el-menu-item.is-active
+  height 1.5rem
+  line-height 1.5rem
+  width 2.9rem
+  text-align center
+  font-size .35rem
+.headers >>> .el-submenu__title
+  text-align center
+  font-size .35rem
+.headers >>> .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow
+  text-align center
+  font-size .35rem
+.headers >>> .el-menu-item
+  height 1.5rem
+  line-height 1.5rem
+  width 2.9rem
+  text-align center
+  font-size .35rem
 .top
     width 100%
-    line-height 50px
-    height 50px
+    line-height 1.25rem
+    height 1.25rem
     background linear-gradient(to right, #12d2c6 2%, #0ebed4 97%) #12d2c6
-    border-radius 7px 7px 0 0
+    border-radius .175rem .175rem 0 0
     color:#ffff
-    margin-top 10px
+    margin-top .25rem
+    font-size .35rem
     z-index 999
     position relative
     span
-      margin-left 10px
+      margin-left .25rem
 .center
     width 100%
-    height 400px
+    height 10rem
     background #ffffff
     border 1px solid #e5e5e5
     box-sizing border-box
@@ -302,18 +326,18 @@ export default {
     position relative
   #l-map
     width 100%
-    height 400px
+    height 10rem
     z-index 999
   .el-icon-error 
     z-index 1999
     position absolute
-    right 16px
-    top 16px
+    right .4rem
+    top .4rem
     cursor pointer
   a
     text-decoration none
   .el-row 
-    margin-bottom: 20px;
+    margin-bottom: .5rem;
     &:last-child 
       margin-bottom: 0; 
   .bg-purple-dark 
@@ -323,31 +347,39 @@ export default {
   .bg-purple-light 
     background: #232836;
     position relative
-    height 60px
+    height 1.5rem
     .search
-      width 300px
-      height 100%
+      width 7.5rem
+      height 1.5rem
       position absolute
       top 0
-      right 200px
+      right 5rem
+      margin .25rem
       input
         width 60%
         height 60%
-        margin 10px
         outline none
-        border-radius 30px
-        padding-left 10px
+        border-radius .75rem
+        padding-left .25rem
+        font-size .35rem
       .el-button
-        padding 12px 20px
-        border-radius 20px
+        padding .3rem .5rem
+        border-radius .5rem
+        font-size .35rem
+        margin-left .1rem
+    @media screen and (max-width: 820px) 
+      .search
+          position absolute
+          top 0
+          right -8rem
     .lgr
         display inline
         position absolute
         top 0
         right 0
-        line-height 60px
+        line-height 1.5rem
         color #79829a
-        font-size 14px
+        font-size .35rem
         font-weight normal
         a
             color #79829a
@@ -357,28 +389,28 @@ export default {
             color #ffffff
         .exit
             color #79829a
-            font-size 14px
+            font-size .35rem
             font-weight normal
             cursor pointer
         .exit:hover
             text-decoration underline
             color #ffffff
         i
-          font-size 17px
+          font-size .425rem
         .unreadMsg
           color #ffffff
           position absolute
-          left -12px
-          top 11px
+          left -0.3rem
+          top .275rem
           background rgba(255,0,0,0.8)
-          line-height 18px
-          width  18px
+          line-height .45rem
+          width  .45rem
           text-align center
           border-radius 50%
           display inline-block
           font-size 1px
   .grid-content 
-    min-height: 60px;
+    min-height: 1.5rem;
   .center::-webkit-scrollbar 
       width: 0px;
       height: 0px;

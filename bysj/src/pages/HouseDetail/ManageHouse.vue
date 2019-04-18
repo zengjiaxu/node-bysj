@@ -102,63 +102,69 @@ export default {
 </script>
 
 <style scoped lang="stylus">
+.main >>> .el-button
+    padding .3rem .5rem
+    font-size .35rem
+    border-radius .1rem
 .top
     width 100%
-    line-height 50px
-    margin-top 20px
+    line-height 1.25rem
+    margin-top .5rem
     background: linear-gradient(to right, rgb(255, 113, 74) 2%, rgb(252, 66, 66) 97%); 
-    border-radius 7px 7px 0 0
+    border-radius .175rem .175rem 0 0
     color:#ffff
+    font-size .35rem
     span
-        margin-left 10px
+        margin-left .25rem
 
 .main
     width 100%
-    height 800px
+    height 20rem
     box-sizing border-box
     border 1px solid #c
     border-top none
-    padding 10px
+    padding .25rem
     overflow scroll
+    font-size .35rem
     .detail
         width 32%
         height 100%
         float left
-        margin 8px
+        margin .2rem
         .img 
             width 100%
-            height 250px
+            height 6.25rem
             img 
                 width 100%
                 height 100%
         .info
             width 100%
-            height 120px
-            margin-top 10px
+            height 3rem
+            margin-top .25rem
             position relative
             p
-                font-size 14px
+                font-size .35rem
                 color #999
-                line-height 40px
+                line-height 1rem
             .bPrice
                 text-align right 
                 display inline-block
                 position absolute
                 bottom  0
                 right 0
-                font-size 14px
+                font-size .35rem
                 color #999
             .price
                 color orange
-                font-size 30px
+                font-size .75rem
             .size .el-button
-                  line-height  5px
+                  line-height  .125rem
                   float right
-                  margin-right 5px
+                  margin-right .125rem
             .address
                   .review1,.review2,.review3
                       float right
-                      font-size 18px
+                      font-size .45rem
                   .review1
                       color #cccccc
                   .review2
