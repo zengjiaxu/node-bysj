@@ -354,6 +354,7 @@ export default {
     background: linear-gradient(to right, rgb(243, 182, 74) 2%, rgb(242, 197, 69) 97%) rgb(243, 182, 74)
     border-radius .175rem .175rem 0 0
     color:#ffff
+    font-size .35rem
     span
         margin-left .25rem
 .top1
@@ -363,6 +364,7 @@ export default {
     background linear-gradient(to right, rgb(18, 210, 198) 2%, rgb(14, 190, 212) 97%) rgb(18, 210, 198);
     border-radius .175rem .175rem 0 0
     color:#ffff
+    font-size .35rem
     span
         margin-left .25rem
 .main
