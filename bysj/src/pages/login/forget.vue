@@ -86,6 +86,7 @@ methods:{
    })
  },
  getInfo(res) {
+   console.log(res)
    if(res.data.code === 1){
      this.isDisabledOne = true
      this.isShow = true
@@ -99,7 +100,7 @@ methods:{
      }
    },1000)
    }else{
-     this.$message('发送失败')
+     this.$message('发送失败,'+res.data.msg)
    }
  },
  sure(){

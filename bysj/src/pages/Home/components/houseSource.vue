@@ -1,5 +1,5 @@
 <template>
-    <div class="hourseSource">
+    <div class="hourseSource" id="maodian1">
         <div class="house" v-for="(item,idx) of msg" :key="idx">
             <div class="top"><span>最新房源信息</span></div>
             <div class="center">

@@ -66,12 +66,12 @@ router.post('/InsertHouseInfo',async function (ctx,next) {
     })
 //修改房源信息
 router.post('/updateHouseInfo',async function (ctx,next) {
-  const {imgUrl,houseLarge,phone,address,price,username} = ctx.request.body
+  const {imgUrl,houseLarge,phone,address,price,username,id} = ctx.request.body
   if(username){
     if(ctx.request.body){
       await Pet.update({imgUrl,houseLarge,phone,address,price,username}, {
             where: {
-              username//查询条件
+              id//查询条件
             }
           })
           .then(((p)=>{

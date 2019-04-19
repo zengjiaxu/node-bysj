@@ -134,52 +134,68 @@ router.post('/login',async function (ctx, next) {
 
 //验证码接口
 router.post('/verify',async (ctx,next)=>{
-  let transporter = nodeMailer.createTransport({//发送对象
-    host: 'smtp.qq.com',
-    port: 465,
-    secure: true, 
-    auth: {
-      user: '79858318@qq.com',
-      pass: 'hdykcwckepgabhah'
+await  Pet.findAll({
+    where:{
+      username:ctx.request.body.user
     }
-  })
-  let ko = {
-    code: Math.random().toString(16).slice(2,6).toUpperCase(),
-    //expire: new Date().getTime+60*60*1000,
-    email: ctx.request.body.email,
-    user: ctx.request.body.user
-  }
-  let mailOptions = {//发送内容
-    from: '"认证邮件" <79858318@qq.com>',
-    to: ko.email,
-    subject: '忘记密码的验证码',
-    html: `你的验证码是${ko.code}`
-  }
-  await transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return console.log('错误是:'+error)
-    } 
-  })
-  await Pet.update({
-    password: ko.pass//修改的字段对应的内容
-  }, {
-      where: {
-        username: ko.user//查询条件
+  }).then((p)=>{
+      for (let i of p) {
+          var res = JSON.stringify(i)
+      }
+      var objUser = JSON.parse(res)
+      console.log(objUser.email)
+      return new Promise((res,rej)=>{
+        res(objUser.email)
+      })
+    }).catch((err)=>{
+      console.log('failed: ' + err);
+    }).then((email)=>{
+      if(email === ctx.request.body.email){
+        console.log('一样')
+
+        let transporter = nodeMailer.createTransport({//发送对象
+          host: 'smtp.qq.com',
+          port: 465,
+          secure: true, 
+          auth: {
+            user: '79858318@qq.com',
+            pass: 'hdykcwckepgabhah'
+          }
+        })
+        let ko = {
+          code: Math.random().toString(16).slice(2,6).toUpperCase(),
+          //expire: new Date().getTime+60*60*1000,
+          email: ctx.request.body.email,
+          user: ctx.request.body.user
+        }
+        let mailOptions = {//发送内容
+          from: '"认证邮件" <79858318@qq.com>',
+          to: ko.email,
+          subject: '忘记密码的验证码',
+          html: `你的验证码是${ko.code}`
+        }
+         transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return console.log('错误是:'+error)
+          } 
+        })
+        ctx.body = {
+          code: 1,
+          msg: '验证码已发送'
+        }
+        axios.post('http://localhost:3000/users/forget',{
+          code:ko.code
+        }).then((res)=>{console.log(res)})
+
+
+      }else{
+        ctx.body={
+          code:0,
+          msg:'您输入的邮箱与注册时的不一致'
+        }
       }
     })
-    .then(((p)=>{
-      for(let i of p){
-        console.log(JSON.stringify(i))
-      }
-    })).catch(err => console.log('failed: ' + err)).then(()=>{
-      ctx.body = {
-        code: 1,
-        msg: '验证码已发送'
-      }
-    })
-  axios.post('http://localhost:3000/users/forget',{
-    code:ko.code
-  }).then((res)=>{console.log(res)})
+  
 })
 
 

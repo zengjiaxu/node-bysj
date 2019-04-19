@@ -117,6 +117,7 @@ export default {
       this.$refs.ruleForm.validate((val)=>{
         if(val){//表单验证通过
             axios.post('http://localhost:3000/house/updateHouseInfo',{
+            id:this.id,
             imgUrl: this.imgUrl,
             houseLarge: this.formLabelAlign.houseLarge,
             phone: this.formLabelAlign.phone,
@@ -138,6 +139,7 @@ export default {
     getSuccessInfo(res){
     const data = JSON.parse(res.data.data)
     console.log(data)
+    this.imgUrl = data.imgUrl
     this.formLabelAlign.houseLarge =  data.houseLarge,
     this.formLabelAlign.phone =  data.phone,
     this.formLabelAlign.address = data.address,

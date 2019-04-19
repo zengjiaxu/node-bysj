@@ -177,6 +177,7 @@ export default {
          newDataArr.push(JSON.parse(item))
        })
           this.$emit('handleData',newDataArr)
+          document.querySelector("#maodian1").scrollIntoView(true)
      },
      getCookie (c_name) {    
       if (document.cookie.length>0)
